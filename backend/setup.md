@@ -12,3 +12,6 @@ npm install -D typescript ts-node nodemon @types/express @types/node
 **for gemini**
 npm install @langchain/google-genai dotenv
 npm install -D @types/node
+
+**BackendRun**
+npm run dev

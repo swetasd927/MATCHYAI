@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const testGemini = async () => {
-    if (!process.env.GEMINI_API_KEY) {
+  if (!process.env.GEMINI_API_KEY) {
   console.error("GEMINI_API_KEY is missing from environment");
   console.log("Please add your API key to the .env file.");
   process.exit(1);
