@@ -2,9 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "module": "common js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "type-check": "tsc --noEmit"
@@ -15,7 +14,6 @@
   "description": "",
   "dependencies": {
     "@langchain/core": "^1.1.39",
-    "@langchain/google": "^0.1.10",
     "@langchain/google-genai": "^2.1.26",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
@@ -26,6 +24,7 @@
     "@types/node": "^25.5.2",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.2"
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
   }
 }
