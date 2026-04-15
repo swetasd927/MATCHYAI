@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
+import "reflect-metadata";
 
 dotenv.config();
 //console.log("API Key:", process.env.GEMINI_API_KEY);
