@@ -2,6 +2,7 @@ import "reflect-metadata"
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { AppDataSource } from "./config/db";
 import { HumanMessage } from "@langchain/core/messages";
 
 dotenv.config();
@@ -37,7 +38,14 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, Backend + TypeScript!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  testGemini().catch(console.error);;
-});
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Database connection established successfully!");
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+      testGemini().catch(console.error);
+    });
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization:", err);
+  });
