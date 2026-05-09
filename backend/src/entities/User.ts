@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn("int")
+    @PrimaryGeneratedColumn("increment")
     id!: number
 
     @Column("varchar")
