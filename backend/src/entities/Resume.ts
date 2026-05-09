@@ -1,6 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "./User.js";
 
+export interface Experience {
+    title: string;
+    company: string;
+    duration: string;
+}
+
+export interface Education {
+    degree: string;
+    institution: string;
+    year: string;
+}
+
 @Entity()
 export class Resume {
     @PrimaryGeneratedColumn("increment")
@@ -25,10 +37,10 @@ export class Resume {
     skills!: string[];
 
     @Column("jsonb", { default: [] })
-    experience!: any[];
+    experience!: Experience[];
 
     @Column("jsonb", { default: [] })
-    education!: any[];
+    education!: Education[];
 
     // --- LATER: We will add the Vector Embeddings column here! ---
 
