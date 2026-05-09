@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:5000
+
+### 1. Test Base Route
+GET {{baseUrl}}/
+Accept: text/plain
+
+### 2. Register a Job Seeker
+POST {{baseUrl}}/api/users/register
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "password": "password123",
+    "role": "seeker"
+}
+
+### 3. Register a Recruiter
+POST {{baseUrl}}/api/users/register
+Content-Type: application/json
+
+{
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@example.com",
+    "password": "securepassword",
+    "role": "recruiter"
+}
+
+### 4. Login (Job Seeker)
+# Make sure to copy the token from the response!
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+
+{
+    "email": "john.doe@example.com",
+    "password": "password123"
+}
+
+### 5. Login (Recruiter)
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+
+{
+    "email": "jane.smith@example.com",
+    "password": "securepassword"
+}
