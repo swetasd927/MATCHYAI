@@ -42,10 +42,11 @@ export class Resume {
     @Column("jsonb", { default: [] })
     education!: Education[];
 
-    // This stores the numerical vector representing the exact meaning of the entire resume!
-    // Gemini's text-embedding-004 model outputs exactly 768 dimensions.
-    @Column("vector", { length: 768, nullable: true })
-    embedding!: string; // pgvector handles the array conversion automatically
+    // TEMPORARY FIX FOR WINDOWS:
+    // Since pgvector requires a complex installation on local Windows databases, 
+    // we will store the embedding as a standard float array for now so your app doesn't crash!
+    @Column("float", { array: true, nullable: true })
+    embedding!: number[];
 
     @CreateDateColumn()
     createdAt!: Date;

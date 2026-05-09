@@ -82,7 +82,7 @@ Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`
             skills: structuredData.skills || [],
             experience: structuredData.experience || [],
             education: structuredData.education || [],
-            embedding: `[${vectorEmbedding.join(",")}]` // pgvector expects arrays formatted as string brackets
+            embedding: vectorEmbedding // Standard array for Postgres float[]
         });
 
         await resumeRepository.save(newResume);

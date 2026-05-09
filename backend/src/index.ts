@@ -48,10 +48,6 @@ app.use("/api/resume", resumeRoutes);
 
 AppDataSource.initialize()
   .then(async () => {
-    // 🚀 VERY IMPORTANT: We must enable the pgvector extension in PostgreSQL
-    // before TypeORM tries to use the 'vector' column type!
-    await AppDataSource.query('CREATE EXTENSION IF NOT EXISTS vector');
-    
     console.log("Database connection established successfully!");
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
