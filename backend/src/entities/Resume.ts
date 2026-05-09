@@ -42,7 +42,10 @@ export class Resume {
     @Column("jsonb", { default: [] })
     education!: Education[];
 
-    // --- LATER: We will add the Vector Embeddings column here! ---
+    // This stores the numerical vector representing the exact meaning of the entire resume!
+    // Gemini's text-embedding-004 model outputs exactly 768 dimensions.
+    @Column("vector", { length: 768, nullable: true })
+    embedding!: string; // pgvector handles the array conversion automatically
 
     @CreateDateColumn()
     createdAt!: Date;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import type PdfParseType from "pdf-parse";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Resume } from "../entities/Resume.js";
@@ -11,11 +11,17 @@ interface AuthRequest extends Request {
     user?: { id: number; role: string };
 }
 
-// Initialize the Gemini AI model using Langchain
+// Initialize the Gemini AI model for structured JSON parsing
 const aiModel = new ChatGoogleGenerativeAI({
     apiKey: process.env.GEMINI_API_KEY,
     model: "gemini-1.5-flash",
     temperature: 0.1, // Very low temperature so it strictly follows our JSON instructions!
+});
+
+// Initialize the Gemini Embedding model to convert text into numbers
+const embeddingsModel = new GoogleGenerativeAIEmbeddings({
+    apiKey: process.env.GEMINI_API_KEY,
+    modelName: "text-embedding-004", // Gemini's dedicated embedding model (768 dimensions)
 });
 
 export const uploadAndParseResume = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -62,7 +68,11 @@ Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`
             return;
         }
 
-        // 4. Save the structured JSON into our PostgreSQL Database!
+        // 4. Generate Vector Embeddings for the resume
+        // We pass the rawText to the embedding model, which returns an array of 768 floats!
+        const vectorEmbedding = await embeddingsModel.embedQuery(rawText);
+
+        // 5. Save the structured JSON AND the Vector Embedding into our PostgreSQL Database!
         const resumeRepository = AppDataSource.getRepository(Resume);
         const newResume = resumeRepository.create({
             userId: req.user.id,
@@ -70,14 +80,15 @@ Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`
             address: structuredData.address || "",
             skills: structuredData.skills || [],
             experience: structuredData.experience || [],
-            education: structuredData.education || []
+            education: structuredData.education || [],
+            embedding: `[${vectorEmbedding.join(",")}]` // pgvector expects arrays formatted as string brackets
         });
 
         await resumeRepository.save(newResume);
 
-        // 5. Send the saved DB record back to the user
+        // 6. Send the saved DB record back to the user
         res.status(200).json({
-            message: "Resume successfully parsed, structured by AI, and saved to the database!",
+            message: "Resume successfully parsed, embedded, and saved to the vector database!",
             data: newResume
         });
 
