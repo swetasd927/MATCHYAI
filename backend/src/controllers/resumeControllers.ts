@@ -43,13 +43,14 @@ export const uploadAndParseResume = async (req: AuthRequest, res: Response): Pro
 
         // 2. Instruct Gemini to extract and structure the data into JSON
         const systemPrompt = `You are an expert at parsing CV/PDF files. 
-Extract the following information from the provided resume text and return it strictly as a JSON object matching this exact schema:
-{
-  "name": "Full Name",
-  "address": "Full Address or Location",
-  "skills": ["skill1", "skill2"],
-  "experience": [{"title": "Job Title", "company": "Company Name", "duration": "Duration"}],
-  "education": [{"degree": "Degree Name", "institution": "University Name", "year": "Year"}]
+        Extract the following information from the provided resume text and
+        return it strictly as a JSON object matching this exact schema:
+    {
+        "name": "Full Name",
+        "address": "Full Address or Location",
+        "skills": ["skill1", "skill2"],
+        "experience": [{"title": "Job Title", "company": "Company Name", "duration": "Duration"}],
+        "education": [{"degree": "Degree Name", "institution": "University Name", "year": "Year"}]
 }
 Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`;
 
