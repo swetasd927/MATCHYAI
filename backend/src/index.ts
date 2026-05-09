@@ -2,7 +2,7 @@ import "reflect-metadata"
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { AppDataSource } from "./config/db";
+import { AppDataSource } from "./config/db.js";
 import { HumanMessage } from "@langchain/core/messages";
 
 dotenv.config();

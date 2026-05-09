@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-  "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  "dev": "tsx watch src/index.ts"
 },
   "keywords": [],
   "author": "",
@@ -19,7 +19,6 @@
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.28"
   },
-  "type": "module",
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",

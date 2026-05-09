@@ -2,15 +2,15 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("int")
     id!: number
 
-    @Column()
+    @Column("varchar")
     firstName!: string
 
-    @Column()
+    @Column("varchar")
     lastName!: string
 
-    @Column()
+    @Column("boolean")
     isActive!: boolean
 }
