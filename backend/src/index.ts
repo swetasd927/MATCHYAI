@@ -4,10 +4,13 @@ import dotenv from "dotenv";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { AppDataSource } from "./config/db.js";
 import { HumanMessage } from "@langchain/core/messages";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 //console.log("API Key:", process.env.GEMINI_API_KEY);
 const app = express();
+app.use(express.json());
+
 const PORT = process.env.PORT || 5000;
 
 const testGemini = async () => {
@@ -37,6 +40,9 @@ const testGemini = async () => {
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, Backend + TypeScript!");
 });
+
+//routes setup
+app.use("/api/users", userRoutes);
 
 AppDataSource.initialize()
   .then(() => {
