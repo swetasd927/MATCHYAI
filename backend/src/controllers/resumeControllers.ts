@@ -4,8 +4,7 @@ import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from "@langchain
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Resume } from "../entities/Resume.js";
-
-const pdfParse: typeof PdfParseType = require("pdf-parse");
+import pdfParse from "pdf-parse";
 
 interface AuthRequest extends Request {
     user?: { id: number; role: string };
@@ -38,7 +37,8 @@ export const uploadAndParseResume = async (req: AuthRequest, res: Response): Pro
 
         // 1. Extract raw text using pdf-parse
         const pdfBuffer = req.file.buffer;
-        const parsedPdf = await pdfParse(pdfBuffer);
+        // Bypassing the ESM/CJS interop bug in TSX
+        const parsedPdf = await pdfParse(req.file.buffer);
         const rawText = parsedPdf.text;
 
         // 2. Instruct Gemini to extract and structure the data into JSON
@@ -93,8 +93,12 @@ Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`
             data: newResume
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error parsing resume:", error);
-        res.status(500).json({ message: "Server error while processing resume" });
+        res.status(500).json({ 
+            message: "Server error while processing resume",
+            error: error.message,
+            stack: error.stack
+        });
     }
 };
