@@ -1,4 +1,4 @@
-# MatchyAI — AI-Powered CV Parsing and Job Recommendation System
+# MatchyAI: AI-Powered CV Parsing and Job Recommendation System
 
 MatchyAI is an intelligent recruitment platform that uses Retrieval-Augmented Generation (RAG), large language models, and vector similarity search to connect job seekers with relevant opportunities and help recruiters efficiently identify the best candidates.
 
