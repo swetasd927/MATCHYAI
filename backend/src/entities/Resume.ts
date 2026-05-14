@@ -42,9 +42,6 @@ export class Resume {
     @Column("jsonb", { default: [] })
     education!: Education[];
 
-    // TEMPORARY FIX FOR WINDOWS:
-    // Since pgvector requires a complex installation on local Windows databases, 
-    // we will store the embedding as a standard float array for now so your app doesn't crash!
     @Column("float", { array: true, nullable: true })
     embedding!: number[];
 

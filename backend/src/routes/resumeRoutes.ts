@@ -5,9 +5,6 @@ import { authenticateToken } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-// Configure Multer to store the uploaded file in Memory (RAM).
-// This is perfect because we just want to pass the data to `pdf-parse` and then to Gemini.
-// We don't need to save the actual PDF file permanently on our hard drive.
 const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /api/resume/upload

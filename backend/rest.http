@@ -9,9 +9,9 @@ POST {{baseUrl}}/api/users/register
 Content-Type: application/json
 
 {
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john.doe@example.com",
+    "firstName": "Sweta Dahal",
+    "lastName": "Dahal",
+    "email": "dahalsweta5@gmail.c",
     "password": "password123",
     "role": "seeker"
 }
@@ -34,7 +34,7 @@ POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 
 {
-    "email": "john.doe@example.com",
+    "email": "dahalsweta5@gmail.com",
     "password": "password123"
 }
 
@@ -46,3 +46,38 @@ Content-Type: application/json
     "email": "jane.smith@example.com",
     "password": "securepassword"
 }
+
+### 6. Upload Resume (Job Seeker)
+# Replace YOUR_SEEKER_TOKEN_HERE with the token from Step 4
+# You will need a sample.pdf in the same directory as this file to test this.
+@seekerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InNlZWtlciIsImlhdCI6MTc3ODc0NjIwNSwiZXhwIjoxNzc4ODMyNjA1fQ.Mdjk6ZRgzo4Pu1Wab3ECtw0u9TOxi-LL8ekkhfSHEnA
+
+POST {{baseUrl}}/api/resume/upload
+Authorization: Bearer {{seekerToken}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="pdf"; filename="sample.pdf"
+Content-Type: application/pdf
+
+< ./sample.pdf
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 7. Create Job (Recruiter)
+# Replace YOUR_RECRUITER_TOKEN_HERE with the token from Step 5
+@recruiterToken = YOUR_RECRUITER_TOKEN_HERE
+
+POST {{baseUrl}}/api/jobs
+Content-Type: application/json
+Authorization: Bearer {{recruiterToken}}
+
+{
+    "description": "We are looking for a Full-Stack Developer to join our remote team. The ideal candidate will have strong experience with modern JavaScript/TypeScript technologies including React, Next.js, Node.js, and Express.js. You should be comfortable designing schemas for both SQL (PostgreSQL) and NoSQL (MongoDB) databases. Experience building RESTful APIs, using Tailwind CSS, and integrating AI tools (like Gemini AI) is a huge plus."
+}
+
+### 8. Get Matches for Job
+# Replace 1 with the Job ID you received in Step 7
+@jobId = 1
+
+GET {{baseUrl}}/api/match/{{jobId}}
+Authorization: Bearer {{recruiterToken}}
