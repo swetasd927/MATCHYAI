@@ -17,10 +17,18 @@ interface AppError extends Error {
   statusCode?: number;
 }
 
+interface ResumeData {
+  name?: string;
+  address?: string;
+  skills?: string[];
+  experience?: Array<{ title: string; company: string; duration: string }>;
+  education?: Array<{ degree: string; institution: string; year: string }>;
+}
+
 // Initialize the Gemini AI model for structured JSON parsing
 const aiModel = new ChatGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
-  model: "gemini-1.5-flash",
+  model: "gemini-2.5-flash",
   temperature: 0.1,
 });
 
@@ -48,7 +56,7 @@ export const uploadAndParseResume = async (
     // 1. Extract raw text using pdf-parse
     const pdfBuffer = req.file.buffer;
     // Bypassing the ESM/CJS interop bug in TSX
-    const parsedPdf = await pdfParse(req.file.buffer);
+    const parsedPdf = await pdfParse(pdfBuffer);
     const rawText = parsedPdf.text;
 
     // 2. Instruct Gemini to extract and structure the data into JSON
@@ -70,9 +78,9 @@ export const uploadAndParseResume = async (
     ]);
 
     // 3. Parse Gemini's JSON string back into a real JavaScript Object
-    let structuredData;
+    let structuredData: ResumeData;
     try {
-      structuredData = JSON.parse(aiResponse.content.toString());
+      structuredData = JSON.parse(aiResponse.content.toString()) as ResumeData;
     } catch (jsonError) {
       console.error("AI output was not valid JSON:", aiResponse.content);
       res.status(500).json({ message: "Failed to structure resume data" });

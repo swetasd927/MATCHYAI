@@ -1,6 +1,12 @@
 declare module "pdf-parse" {
+    export interface PdfPageData {
+        pageIndex: number;
+        view: number[];
+        getTextContent(): Promise<{ items: Array<{ str: string }> }>;
+    }
+
     export interface PdfParseOptions {
-        pagerender?: (pageData: Record<string, unknown>) => string | Promise<string>;
+        pagerender?: (pageData: PdfPageData) => string | Promise<string>;
         max?: number;
         version?: string;
     }
