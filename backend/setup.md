@@ -37,10 +37,10 @@ Vector Embeddings
 ## Next Steps (To-Do)
 
 ### 5. Job Description Pipeline
-- [ ] Create `Job` entity (title, requirements, skills, embedding) linked to Recruiter
-- [ ] Build Job upload/creation routes for Recruiters
-- [ ] Use Gemini to extract structured JSON data from Job Descriptions
-- [ ] Generate 768-dimension Vector Embeddings for Jobs
+- [x] Create `Job` entity (title, requirements, skills, embedding) linked to Recruiter
+- [x] Build Job upload/creation routes for Recruiters
+- [x] Use Gemini to extract structured JSON data from Job Descriptions
+- [x] Generate 768-dimension Vector Embeddings for Jobs
 
 ### 6. The Core Matching Engine
 - [ ] Write the Cosine Similarity mathematical function (or SQL query) to compare vectors

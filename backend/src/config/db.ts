@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { User } from "../entities/User";
 
 import { Resume } from "../entities/Resume.js";
+import { Job } from "../entities/Job.js";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE,
   synchronize: true,
   logging: true,
-  entities: [User, Resume],
+  entities: [User, Resume, Job],
   subscribers: [],
   migrations: [],
 });
