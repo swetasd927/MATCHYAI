@@ -17,9 +17,15 @@ interface AppError extends Error {
   statusCode?: number;
 }
 
+interface JobData {
+  title?: string;
+  requirements?: string[];
+  skills?: string[];
+}
+
 const aiModel = new ChatGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
-  model: "gemini-1.5-flash",
+  model: "gemini-2.5-flash",
   temperature: 0.1,
 });
 
@@ -62,9 +68,9 @@ export const createJob = async (
     ]);
 
     // 2. Parse Gemini's JSON string back into a real JavaScript Object
-    let structuredData;
+    let structuredData: JobData;
     try {
-      structuredData = JSON.parse(aiResponse.content.toString());
+      structuredData = JSON.parse(aiResponse.content.toString()) as JobData;
     } catch (jsonError) {
       console.error("AI output was not valid JSON:", aiResponse.content);
       res.status(500).json({ message: "Failed to structure job data" });
