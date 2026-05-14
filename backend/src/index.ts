@@ -7,6 +7,7 @@ import { HumanMessage } from "@langchain/core/messages";
 import userRoutes from "./routes/userRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
+import matchRoutes from "./routes/matchRoutes.js";
 import { log } from "node:console";
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/users", userRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/match", matchRoutes);
 
 AppDataSource.initialize()
   .then(async () => {
