@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { AppDataSource } from "./config/db.js";
 import { HumanMessage } from "@langchain/core/messages";
@@ -13,6 +14,7 @@ import { log } from "node:console";
 dotenv.config();
 //console.log("API Key:", process.env.GEMINI_API_KEY);
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
