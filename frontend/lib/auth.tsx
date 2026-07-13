@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "./api";
-import { User, UserRole } from "@/types";
+import { User, UserRole } from "../types";
 
 interface RegisterInput {
   firstName: string;
