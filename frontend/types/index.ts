@@ -46,4 +46,5 @@ export interface Match {
     education: string[];
     matchPercentage: number;
     similarityScore: number;
+    explanation?: string;
 }
