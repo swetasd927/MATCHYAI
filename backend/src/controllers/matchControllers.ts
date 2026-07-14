@@ -3,7 +3,14 @@ import { AppDataSource } from "../config/db.js";
 import { Job } from "../entities/Job.js";
 import { Resume } from "../entities/Resume.js";
 import { cosineSimilarity } from "../utils/cosineSimilarity.js";
-import { measureMemory } from "node:vm";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { SystemMessage, HumanMessage } from "@langchain/core/messages";
+
+const aiModel = new ChatGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_API_KEY,
+  model: "gemini-2.5-flash",
+  temperature: 0.2,
+});
 
 interface AuthRequest extends Request {
   user?: { id: number; role: string };
@@ -75,10 +82,34 @@ export const getMatchesForJob = async (
     matchResults.sort((a, b) => b.similarityScore - a.similarityScore);
     const top5Matches = matchResults.slice(0, 5);
 
+    // 5. Generate AI Explanations for the top matches
+    const matchesWithExplanations = await Promise.all(
+      top5Matches.map(async (match) => {
+        try {
+          const prompt = `You are an expert technical recruiter. Explain concisely in 1-2 sentences why this candidate is a good match for the job. 
+Job Title: ${job.title}
+Job Requirements: ${job.requirements.join(", ")}
+Candidate Skills: ${match.skills.join(", ")}
+Candidate Experience: ${JSON.stringify(match.experience)}
+Candidate Education: ${JSON.stringify(match.education)}
+Provide ONLY the explanation, without quotes.`;
+
+          const aiResponse = await aiModel.invoke([
+            new HumanMessage(prompt),
+          ]);
+
+          return { ...match, explanation: aiResponse.content.toString().trim() };
+        } catch (err) {
+          console.error(`Failed to generate explanation for resume ${match.resumeId}:`, err);
+          return { ...match, explanation: "AI explanation unavailable at this time." };
+        }
+      })
+    );
+
     res.status(200).json({
       jobId: job.id,
       jobTitle: job.title,
-      matches: top5Matches,
+      matches: matchesWithExplanations,
     });
   } catch (error) {
     console.error("Error matching resumes:", error);

@@ -22,6 +22,19 @@ export default function MatchCard({ match }: { match: Match }) {
           style={{ width: `${match.matchPercentage}%` }}
         ></div>
       </div>
+
+      {match.explanation && (
+        <div className="bg-indigo-500/5 border border-indigo-500/20 rounded-lg p-4 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-400 to-purple-500"></div>
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <div>
+              <h4 className="text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1">AI Match Insight</h4>
+              <p className="text-sm text-slate-300 leading-relaxed">{match.explanation}</p>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div>
         <div className="flex flex-wrap gap-2">

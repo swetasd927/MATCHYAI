@@ -31,7 +31,7 @@ const aiModel = new ChatGoogleGenerativeAI({
 
 const embeddingsModel = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
-  modelName: "text-embedding-004", 
+  modelName: "gemini-embedding-2", 
 });
 
 export const createJob = async (
