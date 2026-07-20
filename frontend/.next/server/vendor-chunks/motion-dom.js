@@ -1311,16 +1311,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "(ssr)/./node_modules/motion-dom/dist/es/scroll/observe.mjs":
-/*!************************************************************!*\
-  !*** ./node_modules/motion-dom/dist/es/scroll/observe.mjs ***!
-  \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   observeTimeline: () => (/* binding */ observeTimeline)\n/* harmony export */ });\n/* harmony import */ var _frameloop_frame_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../frameloop/frame.mjs */ \"(ssr)/./node_modules/motion-dom/dist/es/frameloop/frame.mjs\");\n\n\nfunction observeTimeline(update, timeline) {\n    let prevProgress;\n    const onFrame = () => {\n        const { currentTime } = timeline;\n        const percentage = currentTime === null ? 0 : currentTime.value;\n        const progress = percentage / 100;\n        if (prevProgress !== progress) {\n            update(progress);\n        }\n        prevProgress = progress;\n    };\n    _frameloop_frame_mjs__WEBPACK_IMPORTED_MODULE_0__.frame.preUpdate(onFrame, true);\n    return () => (0,_frameloop_frame_mjs__WEBPACK_IMPORTED_MODULE_0__.cancelFrame)(onFrame);\n}\n\n\n//# sourceMappingURL=observe.mjs.map\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9ub2RlX21vZHVsZXMvbW90aW9uLWRvbS9kaXN0L2VzL3Njcm9sbC9vYnNlcnZlLm1qcyIsIm1hcHBpbmdzIjoiOzs7OztBQUE0RDs7QUFFNUQ7QUFDQTtBQUNBO0FBQ0EsZ0JBQWdCLGNBQWM7QUFDOUI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSxJQUFJLHVEQUFLO0FBQ1QsaUJBQWlCLGlFQUFXO0FBQzVCOztBQUUyQjtBQUMzQiIsInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxEZWxsXFxEZXNrdG9wXFxNQVRDSFlBSVxcZnJvbnRlbmRcXG5vZGVfbW9kdWxlc1xcbW90aW9uLWRvbVxcZGlzdFxcZXNcXHNjcm9sbFxcb2JzZXJ2ZS5tanMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZnJhbWUsIGNhbmNlbEZyYW1lIH0gZnJvbSAnLi4vZnJhbWVsb29wL2ZyYW1lLm1qcyc7XG5cbmZ1bmN0aW9uIG9ic2VydmVUaW1lbGluZSh1cGRhdGUsIHRpbWVsaW5lKSB7XG4gICAgbGV0IHByZXZQcm9ncmVzcztcbiAgICBjb25zdCBvbkZyYW1lID0gKCkgPT4ge1xuICAgICAgICBjb25zdCB7IGN1cnJlbnRUaW1lIH0gPSB0aW1lbGluZTtcbiAgICAgICAgY29uc3QgcGVyY2VudGFnZSA9IGN1cnJlbnRUaW1lID09PSBudWxsID8gMCA6IGN1cnJlbnRUaW1lLnZhbHVlO1xuICAgICAgICBjb25zdCBwcm9ncmVzcyA9IHBlcmNlbnRhZ2UgLyAxMDA7XG4gICAgICAgIGlmIChwcmV2UHJvZ3Jlc3MgIT09IHByb2dyZXNzKSB7XG4gICAgICAgICAgICB1cGRhdGUocHJvZ3Jlc3MpO1xuICAgICAgICB9XG4gICAgICAgIHByZXZQcm9ncmVzcyA9IHByb2dyZXNzO1xuICAgIH07XG4gICAgZnJhbWUucHJlVXBkYXRlKG9uRnJhbWUsIHRydWUpO1xuICAgIHJldHVybiAoKSA9PiBjYW5jZWxGcmFtZShvbkZyYW1lKTtcbn1cblxuZXhwb3J0IHsgb2JzZXJ2ZVRpbWVsaW5lIH07XG4vLyMgc291cmNlTWFwcGluZ1VSTD1vYnNlcnZlLm1qcy5tYXBcbiJdLCJuYW1lcyI6W10sImlnbm9yZUxpc3QiOlswXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(ssr)/./node_modules/motion-dom/dist/es/scroll/observe.mjs\n");
-
-/***/ }),
-
 /***/ "(ssr)/./node_modules/motion-dom/dist/es/stats/buffer.mjs":
 /*!**********************************************************!*\
   !*** ./node_modules/motion-dom/dist/es/stats/buffer.mjs ***!
