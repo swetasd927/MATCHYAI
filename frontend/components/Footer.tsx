@@ -28,7 +28,7 @@ const columns = [
       { label: "For Job Seekers", href: "/seeker" },
       { label: "For Recruiters", href: "/recruiter" },
       { label: "How it works", href: "/#features" },
-      { label: "Pricing", href: "/#pricing" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
