@@ -1,101 +1,113 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
+import { Zap, Target, ShieldCheck, ArrowRight } from "lucide-react";
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
+import { MatchRing } from "../components/MatchRing";
+import BentoFeatures from "../components/BentoFeatures";
 
-const container: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
+const features = [
+  { icon: Target, title: "Semantic matching", desc: "We read meaning, not just keywords — so a great candidate isn't filtered out over phrasing." },
+  { icon: Zap, title: "Instant ranking", desc: "Upload a job or resume once. Ranked matches with reasoning appear in seconds." },
+  { icon: ShieldCheck, title: "Explainable results", desc: "Every match comes with a plain-language reason, not a black-box score." },
+];
 
 export default function Home() {
   return (
-    <div className="relative overflow-hidden">
-      {/* Floating gradient orbs */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] rounded-full bg-brand/30 blur-[120px]"
-        />
-        <motion.div
-          animate={{ y: [0, 30, 0], x: [0, -20, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[10%] right-[5%] w-[450px] h-[450px] rounded-full bg-brand-2/20 blur-[120px]"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] left-[35%] w-[400px] h-[400px] rounded-full bg-brand-3/10 blur-[120px]"
-        />
-      </div>
+    <div>
+      <section className="relative overflow-hidden pt-20 pb-24">
+        <div className="absolute inset-0 noise-mesh -z-10" />
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
+              style={{ background: "var(--surface-2)", border: "1px solid var(--border)", color: "var(--primary)" }}>
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+              </span>
+              Semantic matching, not keyword matching
+            </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="flex flex-col items-center justify-center text-center px-6 pt-28 pb-32 max-w-5xl mx-auto"
-      >
-        <motion.div
-          variants={item}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 text-indigo-300 text-sm font-medium mb-8"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-          </span>
-          AI-Powered Job Matching
-        </motion.div>
+            <h1 className="font-display text-5xl md:text-6xl font-bold leading-[1.05] mb-6">
+              Hire smarter.<br />
+              <span className="text-gradient">Match instantly.</span>
+            </h1>
 
-        <motion.h1 variants={item} className="text-6xl md:text-8xl font-extrabold tracking-tight mb-6 leading-[1.05]">
-          Hire smarter.<br />
-          <span className="text-gradient">Match instantly.</span>
-        </motion.h1>
+            <p className="text-lg max-w-lg mb-8 leading-relaxed" style={{ color: "var(--muted)" }}>
+              Upload your resume once and let AI find the perfect role. Recruiters get ranked, explained candidate matches in seconds — not keyword soup.
+            </p>
 
-        <motion.p variants={item} className="text-lg text-slate-400 max-w-xl mb-10 leading-relaxed">
-          Upload your resume once and let our semantic search engine find the perfect role.
-          Recruiters, find your top candidates in milliseconds.
-        </motion.p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/register"><Button size="lg">Start Matching <ArrowRight size={16} /></Button></Link>
+              <Link href="/login"><Button variant="secondary" size="lg">Sign In</Button></Link>
+            </div>
+          </motion.div>
 
-        <motion.div variants={item} className="flex gap-4 items-center flex-wrap justify-center">
-          <Link
-            href="/register"
-            className="group px-8 py-3.5 rounded-full bg-brand hover:bg-brand/90 text-white font-medium transition-all shadow-[0_0_30px_-6px_rgba(99,102,241,0.7)] hover:shadow-[0_0_40px_-4px_rgba(99,102,241,0.9)] flex items-center gap-2"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
           >
-            Start Matching
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/login"
-            className="px-8 py-3.5 rounded-full border border-white/[0.1] hover:bg-white/[0.04] text-slate-300 font-medium transition-all"
-          >
-            Sign In
-          </Link>
-        </motion.div>
+            <Card className="max-w-sm ml-auto">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h3 className="font-semibold">Sarah Chen</h3>
+                  <p className="text-sm" style={{ color: "var(--muted)" }}>Senior Product Designer</p>
+                </div>
+                <MatchRing percentage={94} size={64} />
+              </div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {["Figma", "React", "Design Systems"].map((s) => (
+                  <span key={s} className="px-2.5 py-1 rounded-full text-xs font-mono"
+                    style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>{s}</span>
+                ))}
+              </div>
+              <p className="text-sm px-3 py-2 rounded-(--radius-md)" style={{ background: "var(--surface-2)", color: "var(--muted)" }}>
+                Strong overlap in design systems experience
+              </p>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
 
-        <motion.div
-          variants={item}
-          className="mt-16 flex items-center gap-8 text-slate-500 text-sm"
-        >
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-brand-2" />
-            <span>Semantic AI matching</span>
-          </div>
-          <div className="w-px h-4 bg-white/10" />
-          <span>Built for seekers & recruiters</span>
-        </motion.div>
-      </motion.div>
+      <section className="py-20 grid md:grid-cols-3 gap-6">
+        {features.map((f, i) => (
+          <motion.div
+            key={f.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.1 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="h-full">
+              <div className="w-10 h-10 rounded-(--radius-md)] flex items-center justify-center mb-4"
+                style={{ background: "color-mix(in oklab, var(--primary) 12%, transparent)" }}>
+                <f.icon size={18} className="text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">{f.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>{f.desc}</p>
+            </Card>
+          </motion.div>
+        ))}
+      </section>
+
+      <BentoFeatures />
+
+      <section className="py-16 text-center card px-8">
+        <h2 className="font-display text-3xl font-bold mb-3">Ready to match smarter?</h2>
+        <p className="mb-6" style={{ color: "var(--muted)" }}>Free to start. No credit card required.</p>
+        <Link href="/register"><Button size="lg">Get Started <ArrowRight size={16} /></Button></Link>
+      </section>
+
+      <footer className="py-10 mt-8 border-t flex justify-between text-sm" style={{ borderColor: "var(--border)", color: "var(--muted)" }}>
+        <span>© 2026 MatchyAI</span>
+        <div className="flex gap-6">
+          <Link href="/login">Login</Link>
+          <Link href="/register">Get Started</Link>
+        </div>
+      </footer>
     </div>
   );
 }
