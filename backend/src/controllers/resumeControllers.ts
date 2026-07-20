@@ -7,6 +7,11 @@ import {
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Resume } from "../entities/Resume.js";
+// Importing pdf-parse's inner lib file directly (not the package root) — the
+// package's own index.js runs a top-level "debug mode" check (`!module.parent`)
+// that, under ESM/tsx interop, evaluates to true and tries to read a test PDF
+// (./test/data/05-versions-space.pdf) that doesn't exist in this project,
+// throwing ENOENT. Importing lib/pdf-parse.js skips that broken code entirely.
 
 import pdfParse from "pdf-parse";
 
@@ -64,7 +69,12 @@ export const uploadAndParseResume = async (
     const parsedPdf = await pdfParse(pdfBuffer);
     const rawText = parsedPdf.text;
 
-    // 2. Instruct Gemini to extract and structure the data into JSON
+    // 2 & 4. Structure the resume into JSON AND generate its vector embedding
+    // at the same time. Both only depend on rawText (from step 1), not on
+    // each other, so running them sequentially was pure wasted latency —
+    // each Gemini call takes a few seconds, and doing them one after another
+    // meant paying for both in full. Promise.all cuts total wait time down
+    // to roughly whichever one is slower, not the sum of both.
     const systemPrompt = `You are an expert at parsing CV/PDF files. 
         Extract the following information from the provided resume text and
         return it strictly as a JSON object matching this exact schema:
@@ -77,9 +87,9 @@ export const uploadAndParseResume = async (
     }
         Return ONLY valid JSON. Do not include any markdown formatting like \`\`\`json.`;
 
-    const aiResponse = await aiModel.invoke([
-      new SystemMessage(systemPrompt),
-      new HumanMessage(rawText),
+    const [aiResponse, vectorEmbedding] = await Promise.all([
+      aiModel.invoke([new SystemMessage(systemPrompt), new HumanMessage(rawText)]),
+      embeddingsModel.embedQuery(rawText),
     ]);
 
     // 3. Parse Gemini's JSON string back into a real JavaScript Object
@@ -92,11 +102,7 @@ export const uploadAndParseResume = async (
       return;
     }
 
-    // 4. Generate Vector Embeddings for the resume
-    // We pass the rawText to the embedding model, which returns an array of 768 floats!
-    const vectorEmbedding = await embeddingsModel.embedQuery(rawText);
-
-    // 5. Save the structured JSON AND the Vector Embedding into our PostgreSQL Database!
+    // 4. Save the structured JSON AND the Vector Embedding into our PostgreSQL Database!
     const resumeRepository = AppDataSource.getRepository(Resume);
     const newResume = resumeRepository.create({
       userId: req.user.id,
