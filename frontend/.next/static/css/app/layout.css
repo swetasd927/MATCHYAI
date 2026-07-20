@@ -420,6 +420,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
   .h-1 {
     height: var(--spacing);
   }
@@ -601,6 +604,9 @@
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .resize {
+    resize: both;
   }
   .resize-none {
     resize: none;
@@ -1279,6 +1285,11 @@
   .disabled\:opacity-50 {
     &:disabled {
       opacity: 50%;
+    }
+  }
+  .sm\:pointer-events-auto {
+    @media (width >= 40rem) {
+      pointer-events: auto;
     }
   }
   .sm\:grid-cols-2 {
