@@ -16,10 +16,14 @@ export default function JobMatchesPage() {
   useEffect(() => {
     if (!params.id) return;
     
-    // Fetch both the job details and the matches concurrently
+    // Fetch both the job details and the matches concurrently.
+    // NOTE: the matches endpoint is GET /match/:jobId (a path param), not a
+    // query string — the previous "/match?jobId=" call didn't match that
+    // route at all, so it 404'd and silently fell back to an empty array
+    // every time, making it look like there were never any matches.
     Promise.all([
       apiFetch<{ data: Job }>(`/jobs/${params.id}`).catch(() => null),
-      apiFetch<{ data: Match[] }>(`/match?jobId=${params.id}`).catch(() => ({ data: [] as Match[] }))
+      apiFetch<{ data: Match[] }>(`/match/${params.id}`).catch(() => ({ data: [] as Match[] }))
     ])
     .then(([jobRes, matchesRes]) => {
       if (jobRes && jobRes.data) setJob(jobRes.data);
