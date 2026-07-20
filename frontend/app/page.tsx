@@ -6,6 +6,8 @@ import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import BentoFeatures from "../components/BentoFeatures";
 import Hero from "../components/Hero";
+import CtaBand from "../components/ctaBand";
+import Footer from "../components/Footer";
 
 const features = [
   { icon: Target, title: "Semantic matching", desc: "We read meaning, not just keywords — so a great candidate isn't filtered out over phrasing." },
@@ -48,13 +50,9 @@ export default function Home() {
         <Link href="/register"><Button size="lg">Get Started <ArrowRight size={16} /></Button></Link>
       </section>
 
-      <footer className="py-10 mt-8 border-t flex justify-between text-sm" style={{ borderColor: "var(--border)", color: "var(--muted)" }}>
-        <span>© 2026 MatchyAI</span>
-        <div className="flex gap-6">
-          <Link href="/login">Login</Link>
-          <Link href="/register">Get Started</Link>
-        </div>
-      </footer>
+     
+     <CtaBand />
+<Footer />
     </div>
   );
 }
