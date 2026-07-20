@@ -12,7 +12,6 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/seeker", label: "For Job Seekers" },
   { href: "/recruiter", label: "For Recruiters" },
-  { href: "/pricing", label: "Pricing" },
 ];
 
 export default function Navbar() {
