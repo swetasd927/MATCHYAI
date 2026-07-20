@@ -5,6 +5,7 @@ import { Zap, Target, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { MatchRing } from "../components/MatchRing";
+import BentoFeatures from "../components/BentoFeatures";
 
 const features = [
   { icon: Target, title: "Semantic matching", desc: "We read meaning, not just keywords — so a great candidate isn't filtered out over phrasing." },
@@ -22,13 +23,13 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
               style={{ background: "var(--surface-2)", border: "1px solid var(--border)", color: "var(--primary)" }}>
               <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary)] opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--primary)]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
               </span>
               Semantic matching, not keyword matching
             </div>
 
-            <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-6xl font-bold leading-[1.05] mb-6">
+            <h1 className="font-display text-5xl md:text-6xl font-bold leading-[1.05] mb-6">
               Hire smarter.<br />
               <span className="text-gradient">Match instantly.</span>
             </h1>
@@ -58,11 +59,11 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-2 mb-4">
                 {["Figma", "React", "Design Systems"].map((s) => (
-                  <span key={s} className="px-2.5 py-1 rounded-full text-xs font-[family-name:var(--font-mono)]"
+                  <span key={s} className="px-2.5 py-1 rounded-full text-xs font-mono"
                     style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>{s}</span>
                 ))}
               </div>
-              <p className="text-sm px-3 py-2 rounded-[var(--radius-md)]" style={{ background: "var(--surface-2)", color: "var(--muted)" }}>
+              <p className="text-sm px-3 py-2 rounded-(--radius-md)" style={{ background: "var(--surface-2)", color: "var(--muted)" }}>
                 Strong overlap in design systems experience
               </p>
             </Card>
@@ -81,9 +82,9 @@ export default function Home() {
             whileHover={{ y: -4 }}
           >
             <Card className="h-full">
-              <div className="w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center mb-4"
+              <div className="w-10 h-10 rounded-(--radius-md)] flex items-center justify-center mb-4"
                 style={{ background: "color-mix(in oklab, var(--primary) 12%, transparent)" }}>
-                <f.icon size={18} className="text-[var(--primary)]" />
+                <f.icon size={18} className="text-primary" />
               </div>
               <h3 className="font-semibold mb-2">{f.title}</h3>
               <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>{f.desc}</p>
@@ -92,8 +93,10 @@ export default function Home() {
         ))}
       </section>
 
+      <BentoFeatures />
+
       <section className="py-16 text-center card px-8">
-        <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold mb-3">Ready to match smarter?</h2>
+        <h2 className="font-display text-3xl font-bold mb-3">Ready to match smarter?</h2>
         <p className="mb-6" style={{ color: "var(--muted)" }}>Free to start. No credit card required.</p>
         <Link href="/register"><Button size="lg">Get Started <ArrowRight size={16} /></Button></Link>
       </section>

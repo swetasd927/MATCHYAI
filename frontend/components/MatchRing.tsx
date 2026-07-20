@@ -24,7 +24,7 @@ export function MatchRing({ percentage, size = 84 }: { percentage: number; size?
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center font-[family-name:var(--font-mono)]">
+      <div className="absolute inset-0 flex flex-col items-center justify-center font-mono">
         <span className="text-lg font-semibold">{percentage}%</span>
       </div>
     </div>
