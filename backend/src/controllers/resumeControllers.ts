@@ -7,6 +7,7 @@ import {
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Resume } from "../entities/Resume.js";
+
 import pdfParse from "pdf-parse";
 
 interface AuthRequest extends Request {
@@ -32,10 +33,14 @@ const aiModel = new ChatGoogleGenerativeAI({
   temperature: 0.1,
 });
 
-// Initialize the Gemini Embedding model to convert text into numbers
+// Initialize the Gemini Embedding model to convert text into numbers.
+// NOTE: "text-embedding-004" was deprecated by Google — it now 404s on v1beta.
+// "gemini-embedding-001" is the current replacement. This MUST stay identical
+// to the model used in jobControllers.ts, since resume and job embeddings are
+// compared via cosine similarity and only make sense in the same vector space.
 const embeddingsModel = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
-  modelName: "text-embedding-004", // Gemini's dedicated embedding model (768 dimensions)
+  modelName: "gemini-embedding-001",
 });
 
 export const uploadAndParseResume = async (

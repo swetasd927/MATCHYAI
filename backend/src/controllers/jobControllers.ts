@@ -29,9 +29,12 @@ const aiModel = new ChatGoogleGenerativeAI({
   temperature: 0.1,
 });
 
+// Must stay identical to the model used in resumeControllers.ts — job and
+// resume embeddings are compared via cosine similarity, so they only make
+// sense if both come from the exact same embedding model/vector space.
 const embeddingsModel = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
-  modelName: "gemini-embedding-2", 
+  modelName: "gemini-embedding-001",
 });
 
 export const createJob = async (
