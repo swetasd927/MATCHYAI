@@ -1,13 +1,15 @@
 "use client";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Target, Zap, ShieldCheck } from "lucide-react";
+import { Zap, Target, ShieldCheck, ArrowRight } from "lucide-react";
+import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import BentoFeatures from "../components/BentoFeatures";
 import Hero from "../components/Hero";
-import PricingSection from "../components/PricingSection";
-import SpotlightBand from "../components/SpotLightBand";
+import GlobeSection from "../components/GlobeSection";
 import CtaBand from "../components/ctaBand";
 import Footer from "../components/Footer";
+import PricingSection from "../components/PricingSection"
 
 const features = [
   { icon: Target, title: "Semantic matching", desc: "We read meaning, not just keywords — so a great candidate isn't filtered out over phrasing." },
@@ -20,9 +22,7 @@ export default function Home() {
     <div>
       <Hero />
 
-      {/* Pricing sits right under the hero/globe, same as the reference
-          layout — visible without needing to scroll past every section. */}
-      <PricingSection variant="home" />
+      <GlobeSection />
 
       <section className="py-20 grid md:grid-cols-3 gap-6">
         {features.map((f, i) => (
@@ -48,10 +48,11 @@ export default function Home() {
 
       <BentoFeatures />
 
-      <SpotlightBand />
+      <PricingSection />
 
-      <CtaBand />
-      <Footer />
+     
+     <CtaBand />
+<Footer />
     </div>
   );
 }
