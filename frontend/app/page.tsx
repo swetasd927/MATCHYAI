@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Zap, Target, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
+
 import { IconBadge } from "../components/ui/iconBadge";
 import BentoFeatures from "../components/BentoFeatures";
 import Hero from "../components/Hero";
@@ -34,7 +35,7 @@ export default function Home() {
     <div>
       <Hero />
 
-      <section className="py-20 grid md:grid-cols-3 gap-6">
+      <section id="features" className="py-20 grid md:grid-cols-3 gap-6">
         {features.map((f, i) => (
           <motion.div
             key={f.title}

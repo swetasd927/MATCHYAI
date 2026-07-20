@@ -15,7 +15,7 @@ export default function GlobeSection() {
         {/* soft glow sitting behind the globe */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-105 w-105 rounded-full opacity-40 blur-3xl md:h-140 md:w-140"
+            className="h-105 w-105 rounded-full opacity-40 blur-3xl md:h-[560px] md:w-[560px]"
             style={{ background: "rgba(59, 130, 246, 0.55)" }}
           />
         </div>

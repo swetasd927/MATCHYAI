@@ -3,7 +3,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowUp, Mail } from "lucide-react";
 import type { SVGProps } from "react";
-
+import ThemeToggle from "./ThemeToggle";
 
 function LinkedinIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -123,16 +123,19 @@ export default function Footer() {
             © {new Date().getFullYear()} MatchyAI. All rights reserved.
           </span>
 
-          <motion.button
-            onClick={scrollTop}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Back to top"
-            className="w-9 h-9 rounded-full flex items-center justify-center border"
-            style={{ borderColor: "var(--border)", color: "var(--muted)" }}
-          >
-            <ArrowUp size={15} />
-          </motion.button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <motion.button
+              onClick={scrollTop}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Back to top"
+              className="w-9 h-9 rounded-full flex items-center justify-center border"
+              style={{ borderColor: "var(--border)", color: "var(--muted)" }}
+            >
+              <ArrowUp size={15} />
+            </motion.button>
+          </div>
         </div>
       </div>
     </footer>

@@ -234,9 +234,6 @@
   .absolute {
     position: absolute;
   }
-  .fixed {
-    position: fixed;
-  }
   .relative {
     position: relative;
   }
@@ -272,6 +269,9 @@
   }
   .-right-24 {
     right: calc(var(--spacing) * -24);
+  }
+  .right-0 {
+    right: 0;
   }
   .-bottom-24 {
     bottom: calc(var(--spacing) * -24);
@@ -644,9 +644,6 @@
   .cursor-pointer {
     cursor: pointer;
   }
-  .resize {
-    resize: both;
-  }
   .resize-none {
     resize: none;
   }
@@ -795,6 +792,10 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
   .border-t {
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
@@ -878,6 +879,9 @@
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
   }
+  .px-3\.5 {
+    padding-inline: calc(var(--spacing) * 3.5);
+  }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
   }
@@ -934,6 +938,9 @@
   }
   .py-20 {
     padding-block: calc(var(--spacing) * 20);
+  }
+  .py-24 {
+    padding-block: calc(var(--spacing) * 24);
   }
   .py-28 {
     padding-block: calc(var(--spacing) * 28);
@@ -1048,6 +1055,9 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .text-\[10px\] {
+    font-size: 10px;
   }
   .leading-\[1\.05\] {
     --tw-leading: 1.05;
@@ -1487,24 +1497,19 @@
       display: flex;
     }
   }
-  .md\:hidden {
-    @media (width >= 48rem) {
-      display: none;
-    }
-  }
   .md\:h-24 {
     @media (width >= 48rem) {
       height: calc(var(--spacing) * 24);
     }
   }
-  .md\:h-140 {
+  .md\:h-\[560px\] {
     @media (width >= 48rem) {
-      height: calc(var(--spacing) * 140);
+      height: 560px;
     }
   }
-  .md\:w-140 {
+  .md\:w-\[560px\] {
     @media (width >= 48rem) {
-      width: calc(var(--spacing) * 140);
+      width: 560px;
     }
   }
   .md\:grid-cols-2 {
@@ -1573,6 +1578,16 @@
     @media (width >= 48rem) {
       font-size: var(--text-6xl);
       line-height: var(--tw-leading, var(--text-6xl--line-height));
+    }
+  }
+  .lg\:flex {
+    @media (width >= 64rem) {
+      display: flex;
+    }
+  }
+  .lg\:hidden {
+    @media (width >= 64rem) {
+      display: none;
     }
   }
 }
