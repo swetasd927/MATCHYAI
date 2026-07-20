@@ -39,60 +39,66 @@ export default function Navbar() {
       className="sticky top-0 z-50 w-full border-b transition-all duration-300"
       style={{
         borderColor: scrolled ? "var(--border)" : "transparent",
-        background: scrolled ? "color-mix(in oklab, var(--bg) 80%, transparent)" : "transparent",
+        background: scrolled ? "color-mix(in oklab, var(--bg) 82%, transparent)" : "transparent",
         backdropFilter: scrolled ? "blur(16px) saturate(140%)" : "none",
       }}
     >
       <div
         className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 transition-[padding] duration-300"
-        style={{ paddingTop: scrolled ? "0.75rem" : "1rem", paddingBottom: scrolled ? "0.75rem" : "1rem" }}
+        style={{ paddingTop: scrolled ? "0.65rem" : "0.85rem", paddingBottom: scrolled ? "0.65rem" : "0.85rem" }}
       >
-        <Link href="/" className="flex items-center gap-2 font-display text-xl font-bold shrink-0">
-          <motion.span
-            whileHover={{ rotate: 15, scale: 1.05 }}
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white shrink-0"
-          >
-            <Sparkles size={16} />
-          </motion.span>
-          <span className="whitespace-nowrap">
-            Matchy<span className="text-gradient">AI</span>
-          </span>
-        </Link>
+        {/* Left group: logo + nav links, anchored together */}
+        <div className="flex items-center gap-8 min-w-0">
+          <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold shrink-0">
+            <motion.span
+              whileHover={{ rotate: 15, scale: 1.05 }}
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white shrink-0"
+            >
+              <Sparkles size={14} />
+            </motion.span>
+            <span className="whitespace-nowrap tracking-tight">
+              Matchy<span className="text-gradient">AI</span>
+            </span>
+          </Link>
 
-        <div className="hidden lg:flex items-center gap-1 relative">
-          {links.map((l) => {
-            const active = pathname === l.href;
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="relative px-3.5 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors"
-                style={{ color: active ? "var(--text)" : "var(--muted)" }}
-              >
-                {active && (
-                  <motion.span
-                    layoutId="navbar-active-pill"
-                    className="absolute inset-0 rounded-full -z-10"
-                    style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{l.label}</span>
-              </Link>
-            );
-          })}
+          <div className="hidden lg:flex items-center gap-0.5 relative">
+            {links.map((l) => {
+              const active = pathname === l.href;
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="relative px-3 py-1.5 text-[13px] font-medium rounded-full whitespace-nowrap transition-colors"
+                  style={{ color: active ? "var(--text)" : "var(--muted)" }}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="navbar-active-pill"
+                      className="absolute inset-0 rounded-full -z-10"
+                      style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{l.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-3 shrink-0">
+        {/* Right group: auth actions, pinned to the far right */}
+        <div className="hidden lg:flex items-center gap-4 shrink-0">
           {user ? (
             <ProfileMenu />
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-muted hover:text-text whitespace-nowrap">
+              <Link href="/login" className="text-[13px] font-medium text-muted hover:text-text whitespace-nowrap transition-colors">
                 Login
               </Link>
               <Link href="/register">
-                <Button size="sm">Get Started</Button>
+                <Button size="sm" className="text-[13px] px-4 py-1.5 h-auto">
+                  Get Started
+                </Button>
               </Link>
             </>
           )}
@@ -108,7 +114,7 @@ export default function Navbar() {
               transition={{ duration: 0.15 }}
               className="flex"
             >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </motion.span>
           </AnimatePresence>
         </button>

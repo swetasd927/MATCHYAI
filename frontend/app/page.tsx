@@ -9,6 +9,7 @@ import { Card } from "../components/ui/Card";
 import { IconBadge } from "../components/ui/iconBadge";
 import BentoFeatures from "../components/BentoFeatures";
 import Hero from "../components/Hero";
+import PricingSection from "../components/PricingSection";
 import CtaBand from "../components/ctaBand";
 import Footer from "../components/Footer";
 
@@ -57,6 +58,10 @@ export default function Home() {
       </section>
 
       <BentoFeatures />
+
+      <div id="pricing">
+        <PricingSection variant="home" />
+      </div>
 
       <section className="py-16 text-center card px-8">
         <h2 className="font-display text-3xl font-bold mb-3">Ready to match smarter?</h2>
