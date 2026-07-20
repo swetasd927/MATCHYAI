@@ -1,36 +1,51 @@
 @import "tailwindcss";
 
-@layer utilities {
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
-  }
-  
-  .glass-card {
-    @apply bg-slate-800/40 backdrop-blur-lg border border-slate-700/50 shadow-2xl rounded-2xl;
-  }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400;
-  }
+:root {
+  --bg: #05050a;
+  --surface: #0d0d14;
+  --surface-2: #13131d;
+  --border: rgba(255,255,255,0.08);
+  --brand: #6366f1;
+  --brand-2: #a855f7;
+  --brand-3: #22d3ee;
+  --text-muted: #94a3b8;
 }
 
 @layer base {
   body {
-    @apply antialiased bg-slate-950 text-slate-100;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--bg);
+    font-feature-settings: "cv02","cv03","cv04","cv11";
   }
+  ::selection { background: rgba(99,102,241,0.35); }
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@layer utilities {
+  /* Layered gradient mesh — cheap, no JS, big visual upgrade */
+  .mesh-bg {
+    background:
+      radial-gradient(60% 50% at 15% 0%, rgba(99,102,241,0.25), transparent 60%),
+      radial-gradient(50% 40% at 85% 10%, rgba(168,85,247,0.20), transparent 60%),
+      radial-gradient(40% 40% at 50% 100%, rgba(34,211,238,0.12), transparent 60%),
+      var(--bg);
+  }
 
-.animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+  .glass-card {
+    @apply bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.05) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+  }
 
-.hover-lift {
-  @apply transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818cf8, #c084fc 50%, #67e8f9);
+  }
+
+  .glow-ring {
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.4), 0 0 40px -8px rgba(99,102,241,0.5);
+  }
+
+  .noise::before {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
