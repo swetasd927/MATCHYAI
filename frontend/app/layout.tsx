@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased bg-[#05050a] text-slate-100 selection:bg-indigo-500/30 min-h-screen">
         <AuthProvider>
           <Navbar />
-          <main>{children}</main>
+          <main className="mesh-bg min-h-screen">{children}</main>
         </AuthProvider>
       </body>
     </html>

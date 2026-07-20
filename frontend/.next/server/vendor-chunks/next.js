@@ -1787,6 +1787,16 @@ eval("// This regex will have fast negatives meaning valid identifiers may not p
 
 /***/ }),
 
+/***/ "(rsc)/./node_modules/next/font/local/target.css?{\"path\":\"node_modules\\\\geist\\\\dist\\\\sans.js\",\"import\":\"\",\"arguments\":[{\"src\":\"./fonts/geist-sans/Geist-Variable.woff2\",\"variable\":\"--font-geist-sans\",\"weight\":\"100 900\"}],\"variableName\":\"GeistSans\"}":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/font/local/target.css?{"path":"node_modules\\geist\\dist\\sans.js","import":"","arguments":[{"src":"./fonts/geist-sans/Geist-Variable.woff2","variable":"--font-geist-sans","weight":"100 900"}],"variableName":"GeistSans"} ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module) => {
+
+eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'GeistSans', 'GeistSans Fallback'\"},\n\t\"className\": \"__className_8adcd2\",\n\t\"variable\": \"__variable_8adcd2\"\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9ub2RlX21vZHVsZXMvbmV4dC9mb250L2xvY2FsL3RhcmdldC5jc3M/e1wicGF0aFwiOlwibm9kZV9tb2R1bGVzXFxcXGdlaXN0XFxcXGRpc3RcXFxcc2Fucy5qc1wiLFwiaW1wb3J0XCI6XCJcIixcImFyZ3VtZW50c1wiOlt7XCJzcmNcIjpcIi4vZm9udHMvZ2Vpc3Qtc2Fucy9HZWlzdC1WYXJpYWJsZS53b2ZmMlwiLFwidmFyaWFibGVcIjpcIi0tZm9udC1nZWlzdC1zYW5zXCIsXCJ3ZWlnaHRcIjpcIjEwMCA5MDBcIn1dLFwidmFyaWFibGVOYW1lXCI6XCJHZWlzdFNhbnNcIn0iLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBLFdBQVcsaURBQWlEO0FBQzVEO0FBQ0E7QUFDQSIsInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxEZWxsXFxEZXNrdG9wXFxNQVRDSFlBSVxcZnJvbnRlbmRcXG5vZGVfbW9kdWxlc1xcbmV4dFxcZm9udFxcbG9jYWxcXHRhcmdldC5jc3M/e1wicGF0aFwiOlwibm9kZV9tb2R1bGVzXFxnZWlzdFxcZGlzdFxcc2Fucy5qc1wiLFwiaW1wb3J0XCI6XCJcIixcImFyZ3VtZW50c1wiOlt7XCJzcmNcIjpcIi5cXGZvbnRzXFxnZWlzdC1zYW5zXFxHZWlzdC1WYXJpYWJsZS53b2ZmMlwiLFwidmFyaWFibGVcIjpcIi0tZm9udC1nZWlzdC1zYW5zXCIsXCJ3ZWlnaHRcIjpcIjEwMCA5MDBcIn1dLFwidmFyaWFibGVOYW1lXCI6XCJHZWlzdFNhbnNcIn18cnNjIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIEV4cG9ydHNcbm1vZHVsZS5leHBvcnRzID0ge1xuXHRcInN0eWxlXCI6IHtcImZvbnRGYW1pbHlcIjpcIidHZWlzdFNhbnMnLCAnR2Vpc3RTYW5zIEZhbGxiYWNrJ1wifSxcblx0XCJjbGFzc05hbWVcIjogXCJfX2NsYXNzTmFtZV84YWRjZDJcIixcblx0XCJ2YXJpYWJsZVwiOiBcIl9fdmFyaWFibGVfOGFkY2QyXCJcbn07XG4iXSwibmFtZXMiOltdLCJpZ25vcmVMaXN0IjpbMF0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(rsc)/./node_modules/next/font/local/target.css?{\"path\":\"node_modules\\\\geist\\\\dist\\\\sans.js\",\"import\":\"\",\"arguments\":[{\"src\":\"./fonts/geist-sans/Geist-Variable.woff2\",\"variable\":\"--font-geist-sans\",\"weight\":\"100 900\"}],\"variableName\":\"GeistSans\"}\n");
+
+/***/ }),
+
 /***/ "(ssr)/./node_modules/next/dist/api/navigation.js":
 /*!**************************************************!*\
   !*** ./node_modules/next/dist/api/navigation.js ***!
