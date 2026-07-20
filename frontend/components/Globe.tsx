@@ -27,6 +27,17 @@ function hexToUnitRgb(hex: string): [number, number, number] {
   return [((bigint >> 16) & 255) / 255, ((bigint >> 8) & 255) / 255, (bigint & 255) / 255];
 }
 
+// The globe intentionally uses a blue palette rather than the orange brand
+// color — matching the reference design's "network globe" look, which reads
+// better as a data/network visual than an orange sphere would. Kept as its
+// own constants (not tied to --primary) so it stays blue in both themes.
+const GLOBE_BLUE = {
+  markerDark: hexToUnitRgb("#4d9fff"),
+  markerLight: hexToUnitRgb("#2f6fe0"),
+  glowDark: hexToUnitRgb("#3b7dde"),
+  glowLight: hexToUnitRgb("#6ea8f7"),
+};
+
 export default function Globe({
   size = 480,
   className = "",
@@ -50,16 +61,14 @@ export default function Globe({
   useEffect(() => {
     if (!mounted || !canvasRef.current) return;
 
-    // Read the current theme's actual colors from CSS variables so the
-    // globe re-themes itself automatically between light/dark mode instead
-    // of using hardcoded colors.
-    const styles = getComputedStyle(document.documentElement);
-    const primary = hexToUnitRgb(styles.getPropertyValue("--primary") || "#e8600c");
-    const primaryLight = hexToUnitRgb(styles.getPropertyValue("--primary-light") || "#ff8a3d");
+    // Read the theme so the globe can pick light/dark-appropriate shades of
+    // its (fixed) blue palette — colors are no longer pulled from the
+    // orange --primary brand variable, see GLOBE_BLUE above.
     const isDark = resolvedTheme === "dark";
 
     let globe: ReturnType<typeof createGlobe> | null = null;
     let width = 0;
+    let destroyed = false;
 
     const onResize = () => {
       if (canvasRef.current) {
@@ -67,39 +76,73 @@ export default function Globe({
         widthRef.current = width;
       }
     };
+
+    // A window "resize" event alone isn't enough here: this canvas's size is
+    // driven by its flex/aspect-ratio parent, which can settle to its final
+    // width slightly *after* mount (font swap, animation, etc.) without ever
+    // firing a window resize. When that happens the canvas's internal draw
+    // buffer stays locked to a stale (often 0 or wrong) width forever, which
+    // is what produced the squashed/"just an arc" render. ResizeObserver
+    // tracks the actual element box instead, so it always self-corrects.
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      width = entry.contentRect.width;
+      widthRef.current = width;
+
+      // First time we get a real (non-zero) measurement, (re)create the
+      // globe so it starts at the correct size instead of 0.
+      if (width > 0 && !globe && !destroyed) {
+        createGlobeInstance();
+      }
+    });
+    ro.observe(canvasRef.current);
+
     window.addEventListener("resize", onResize);
     onResize();
 
-    globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-      width: width * 2,
-      height: width * 2,
-      phi: 0,
-      theta: 0.32,
-      dark: isDark ? 1 : 0.4,
-      diffuse: 1.2,
-      mapSamples: 14000,
-      mapBrightness: isDark ? 5.5 : 3.5,
-      baseColor: isDark ? [0.14, 0.12, 0.1] : [0.9, 0.86, 0.8],
-      markerColor: primary,
-      glowColor: primaryLight,
-      markers: MARKERS,
-      opacity: 0.9,
-      onRender: (state) => {
-        // Auto-rotate unless the user is actively dragging.
-        if (pointerInteracting.current === null) {
-          phiRef.current += autoRotateSpeed.current;
-        } else {
-          phiRef.current += pointerDelta.current;
-        }
-        state.phi = phiRef.current;
-        state.width = widthRef.current * 2;
-        state.height = widthRef.current * 2;
-      },
-    });
+    function createGlobeInstance() {
+      if (!canvasRef.current) return;
+      globe = createGlobe(canvasRef.current, {
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+        width: widthRef.current * 2,
+        height: widthRef.current * 2,
+        phi: 0,
+        theta: 0.32,
+        dark: isDark ? 1 : 0.4,
+        // Toned down from the earlier version — that was tuned for visibility
+        // but ended up reading as an over-bright glow. This keeps the sphere
+        // clearly visible without blowing out into a "highlight" look.
+        diffuse: 1.1,
+        mapSamples: 14000,
+        mapBrightness: isDark ? 3.2 : 3,
+        baseColor: isDark ? [0.08, 0.13, 0.24] : [0.86, 0.9, 0.97],
+        markerColor: isDark ? GLOBE_BLUE.markerDark : GLOBE_BLUE.markerLight,
+        glowColor: isDark ? GLOBE_BLUE.glowDark : GLOBE_BLUE.glowLight,
+        markers: MARKERS,
+        opacity: 0.9,
+        onRender: (state) => {
+          // Auto-rotate unless the user is actively dragging.
+          if (pointerInteracting.current === null) {
+            phiRef.current += autoRotateSpeed.current;
+          } else {
+            phiRef.current += pointerDelta.current;
+          }
+          state.phi = phiRef.current;
+          state.width = widthRef.current * 2;
+          state.height = widthRef.current * 2;
+        },
+      });
+    }
+
+    // If we already have a real width at mount, create immediately instead
+    // of waiting for the ResizeObserver's first callback.
+    if (width > 0) createGlobeInstance();
 
     return () => {
+      destroyed = true;
       globe?.destroy();
+      ro.disconnect();
       window.removeEventListener("resize", onResize);
     };
   }, [mounted, resolvedTheme]);
@@ -109,6 +152,15 @@ export default function Globe({
       className={`relative aspect-square ${className}`}
       style={{ width: size, maxWidth: "100%" }}
     >
+      {/* Soft halo behind the sphere so its silhouette reads clearly against
+          a dark page background — kept subtle so it reads as ambient light,
+          not a bright highlight. */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+        style={{
+          background: "radial-gradient(circle, rgba(61, 120, 220, 0.14) 0%, transparent 70%)",
+        }}
+      />
       <canvas
         ref={canvasRef}
         onPointerDown={(e) => {

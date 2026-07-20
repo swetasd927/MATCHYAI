@@ -1,11 +1,11 @@
 "use client";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { Zap, Target, ShieldCheck, ArrowRight } from "lucide-react";
-import { Button } from "../components/ui/Button";
+import { Target, Zap, ShieldCheck } from "lucide-react";
 import { Card } from "../components/ui/Card";
 import BentoFeatures from "../components/BentoFeatures";
 import Hero from "../components/Hero";
+import PricingSection from "../components/PricingSection";
+import SpotlightBand from "../components/SpotLightBand";
 import CtaBand from "../components/ctaBand";
 import Footer from "../components/Footer";
 
@@ -19,6 +19,10 @@ export default function Home() {
   return (
     <div>
       <Hero />
+
+      {/* Pricing sits right under the hero/globe, same as the reference
+          layout — visible without needing to scroll past every section. */}
+      <PricingSection variant="home" />
 
       <section className="py-20 grid md:grid-cols-3 gap-6">
         {features.map((f, i) => (
@@ -44,15 +48,10 @@ export default function Home() {
 
       <BentoFeatures />
 
-      <section className="py-16 text-center card px-8">
-        <h2 className="font-display text-3xl font-bold mb-3">Ready to match smarter?</h2>
-        <p className="mb-6" style={{ color: "var(--muted)" }}>Free to start. No credit card required.</p>
-        <Link href="/register"><Button size="lg">Get Started <ArrowRight size={16} /></Button></Link>
-      </section>
+      <SpotlightBand />
 
-     
-     <CtaBand />
-<Footer />
+      <CtaBand />
+      <Footer />
     </div>
   );
 }
