@@ -91,6 +91,22 @@
 }
 
 @layer utilities {
+
+  @keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: var(--star-min, 0.15);
+  }
+  50% {
+    opacity: var(--star-max, 0.9);
+  }
+}
+
+  .animate-star-twinkle {
+    animation: star-twinkle var(--star-duration, 3s) ease-in-out infinite;
+    animation-delay: var(--star-delay, 0s);
+  }
+
   .text-gradient {
     background: linear-gradient(100deg, var(--primary-light), var(--primary));
     -webkit-background-clip: text;
