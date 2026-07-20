@@ -81,7 +81,9 @@
     color: var(--text);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
   }
   ::selection {
     background: color-mix(in oklab, var(--primary) 30%, transparent);
@@ -111,7 +113,35 @@
 
   .noise-mesh {
     background:
-      radial-gradient(ellipse 60% 50% at 20% 0%, color-mix(in oklab, var(--primary) 18%, transparent), transparent),
-      radial-gradient(ellipse 50% 40% at 90% 20%, color-mix(in oklab, var(--primary-light) 12%, transparent), transparent);
+      radial-gradient(
+        ellipse 60% 50% at 20% 0%,
+        color-mix(in oklab, var(--primary) 18%, transparent),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 50% 40% at 90% 20%,
+        color-mix(in oklab, var(--primary-light) 12%, transparent),
+        transparent
+      );
+  }
+  .skeleton {
+    background: linear-gradient(
+      100deg,
+      var(--surface-2) 30%,
+      color-mix(in oklab, var(--surface-2) 40%, var(--border)) 45%,
+      var(--surface-2) 60%
+    );
+    background-size: 250% 100%;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -50% 0;
   }
 }

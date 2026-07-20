@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Briefcase, Users, Target, Sparkles, ArrowRight, Clock } from "lucide-react";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import JobPostForm from "../../components/JobPostForm";
+import JobCardSkeleton from "../../components/JobCardSkeleton";
+import StatCardSkeleton from "../../components/StatCardSkeleton";
 import { Card } from "../../components/ui/Card";
 import { Job, Match } from "../../types";
 import { apiFetch } from "../../lib/api";
@@ -48,8 +50,8 @@ export default function RecruiterDashboard() {
     if (jobs.length === 0) return;
     Promise.all(
       jobs.map((j) =>
-        apiFetch<{ data: Match[] }>(`/match/${j.id}`)
-          .then((res) => [j.id, res.data] as const)
+        apiFetch<{ matches: Match[] }>(`/match/${j.id}`)
+          .then((res) => [j.id, res.matches] as const)
           .catch(() => [j.id, []] as const),
       ),
     ).then((results) => {
@@ -84,19 +86,27 @@ export default function RecruiterDashboard() {
         </div>
 
         {/* Stat cards */}
-        <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {stats.map((s) => (
-            <motion.div key={s.label} variants={item}>
-              <Card className="p-4! sm:p-5!">
-                <s.icon size={16} className="text-primary mb-2.5" />
-                <div className="font-display text-xl sm:text-2xl font-bold">{s.value}</div>
-                <div className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
-                  {s.label}
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[0, 1, 2, 3].map((i) => (
+              <StatCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {stats.map((s) => (
+              <motion.div key={s.label} variants={item}>
+                <Card className="p-4! sm:p-5!">
+                  <s.icon size={16} className="text-primary mb-2.5" />
+                  <div className="font-display text-xl sm:text-2xl font-bold">{s.value}</div>
+                  <div className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
+                    {s.label}
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         <Card>
           <JobPostForm onPosted={(job) => setJobs([job, ...jobs])} />
@@ -106,13 +116,9 @@ export default function RecruiterDashboard() {
           <h2 className="font-semibold text-lg mb-4">Your Posted Jobs</h2>
 
           {loading ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {[0, 1].map((i) => (
-                <div
-                  key={i}
-                  className="h-24 rounded-lg animate-pulse"
-                  style={{ background: "var(--surface-2)" }}
-                />
+                <JobCardSkeleton key={i} />
               ))}
             </div>
           ) : jobs.length === 0 ? (
