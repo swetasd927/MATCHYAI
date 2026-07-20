@@ -26,6 +26,7 @@ const aiModel = new ChatGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
   model: "gemini-2.5-flash",
   temperature: 0.1,
+  maxRetries: 23, // fail fast, matches resumeControllers.ts
 });
 
 // Must stay identical to the model used in resumeControllers.ts — job and
@@ -103,10 +104,19 @@ export const createJob = async (
   } catch (error) {
     const err = error as AppError;
     console.error("Error creating job:", error);
+
+    const isRateLimit =
+      err.message?.includes("429") || err.message?.toLowerCase().includes("quota");
+
+    if (isRateLimit) {
+      res.status(429).json({
+        message: "Our AI service is temporarily busy (rate limit reached). Please try again in a minute.",
+      });
+      return;
+    }
+
     res.status(500).json({
-      message: "Server error while processing job description",
-      error: err.message,
-      stack: err.stack,
+      message: "Server error while processing job description. Please try again.",
     });
   }
 };
@@ -127,10 +137,10 @@ export const getJobById = async (
     res.status(200).json({ data: job });
   } catch (error) {
     const err = error as AppError;
-    console.error("Error fetching job:", error);
+    console.error("Error fetching job:", error); // was mislabeled "Error creating job"
+
     res.status(500).json({
-      message: "Server error while fetching job",
-      error: err.message,
+      message: "Server error while fetching job. Please try again.",
     });
   }
 };

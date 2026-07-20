@@ -7,12 +7,6 @@ import {
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Resume } from "../entities/Resume.js";
-// Importing pdf-parse's inner lib file directly (not the package root) — the
-// package's own index.js runs a top-level "debug mode" check (`!module.parent`)
-// that, under ESM/tsx interop, evaluates to true and tries to read a test PDF
-// (./test/data/05-versions-space.pdf) that doesn't exist in this project,
-// throwing ENOENT. Importing lib/pdf-parse.js skips that broken code entirely.
-
 import pdfParse from "pdf-parse";
 
 interface AuthRequest extends Request {
@@ -36,6 +30,11 @@ const aiModel = new ChatGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
   model: "gemini-2.5-flash",
   temperature: 0.1,
+  // Was 12 — on a daily quota error, retries don't help (the cap doesn't
+  // reset mid-retry), so 12 retries just meant the client sat there for
+  // 10+ minutes before finally failing. 1 retry catches transient blips
+  // without turning quota exhaustion into a multi-minute hang.
+  maxRetries: 1,
 });
 
 // Initialize the Gemini Embedding model to convert text into numbers.
@@ -65,16 +64,13 @@ export const uploadAndParseResume = async (
 
     // 1. Extract raw text using pdf-parse
     const pdfBuffer = req.file.buffer;
-    // Bypassing the ESM/CJS interop bug in TSX
     const parsedPdf = await pdfParse(pdfBuffer);
     const rawText = parsedPdf.text;
 
     // 2 & 4. Structure the resume into JSON AND generate its vector embedding
-    // at the same time. Both only depend on rawText (from step 1), not on
-    // each other, so running them sequentially was pure wasted latency —
-    // each Gemini call takes a few seconds, and doing them one after another
-    // meant paying for both in full. Promise.all cuts total wait time down
-    // to roughly whichever one is slower, not the sum of both.
+    // at the same time — both only depend on rawText, not on each other, so
+    // Promise.all cuts total wait time to roughly whichever is slower rather
+    // than the sum of both.
     const systemPrompt = `You are an expert at parsing CV/PDF files. 
         Extract the following information from the provided resume text and
         return it strictly as a JSON object matching this exact schema:
@@ -111,7 +107,7 @@ export const uploadAndParseResume = async (
       skills: structuredData.skills || [],
       experience: structuredData.experience || [],
       education: structuredData.education || [],
-      embedding: vectorEmbedding, // Standard array for Postgres float[]
+      embedding: vectorEmbedding,
     });
 
     await resumeRepository.save(newResume);
@@ -125,10 +121,19 @@ export const uploadAndParseResume = async (
   } catch (error) {
     const err = error as AppError;
     console.error("Error parsing resume:", error);
+
+    const isRateLimit =
+      err.message?.includes("429") || err.message?.toLowerCase().includes("quota");
+
+    if (isRateLimit) {
+      res.status(429).json({
+        message: "Our AI service is temporarily busy (rate limit reached). Please try again in a minute.",
+      });
+      return;
+    }
+
     res.status(500).json({
-      message: "Server error while processing resume",
-      error: err.message,
-      stack: err.stack,
+      message: "Server error while processing resume. Please try again.",
     });
   }
 };
