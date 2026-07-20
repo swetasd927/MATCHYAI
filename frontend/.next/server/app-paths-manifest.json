@@ -1,5 +1,6 @@
 {
-  "/recruiter/jobs/[id]/page": "app/recruiter/jobs/[id]/page.js",
-  "/recruiter/page": "app/recruiter/page.js",
-  "/login/page": "app/login/page.js"
+  "/page": "app/page.js",
+  "/seeker/page": "app/seeker/page.js",
+  "/login/page": "app/login/page.js",
+  "/recruiter/page": "app/recruiter/page.js"
 }
