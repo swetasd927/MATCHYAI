@@ -78,7 +78,7 @@ export default function JobMatchesPage() {
             <div className="grid gap-4">
               {matches.map((match, idx) => (
                 <div key={match.resumeId} className="animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
-                  <MatchCard match={match} />
+                  <MatchCard match={match} jobId={params.id as string} />
                 </div>
               ))}
             </div>

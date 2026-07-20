@@ -14,6 +14,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
  * report upload progress, but XHR's `upload.onprogress` does, which is what
  * drives the real progress bar below (not a simulated/fake one).
  */
+
 function uploadWithProgress(
   file: File,
   onProgress: (pct: number) => void,
@@ -24,6 +25,10 @@ function uploadWithProgress(
 
     xhr.open("POST", `${API_URL}/resume/upload`);
     if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+    // Hard cap so "Processing" can never hang forever — the upload itself
+    // is usually fast, it's the AI parsing step server-side that can stall.
+    xhr.timeout = 30000; // 30s
 
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
@@ -39,6 +44,8 @@ function uploadWithProgress(
       }
     };
     xhr.onerror = () => reject(new Error("Network error while uploading"));
+    xhr.ontimeout = () =>
+      reject(new Error("This is taking too long. The AI service may be busy — please try again shortly."));
 
     const formData = new FormData();
     formData.append("pdf", file);

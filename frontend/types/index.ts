@@ -42,8 +42,8 @@ export interface Match {
     resumeId: number;
     name: string;
     skills: string[];
-    experience: string[];
-    education: string[];
+    experience: Experience[];
+    education: Education[];
     matchPercentage: number;
     similarityScore: number;
     explanation?: string;
