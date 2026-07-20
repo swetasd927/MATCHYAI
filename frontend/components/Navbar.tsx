@@ -1,17 +1,20 @@
+// components/Navbar.tsx
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../lib/auth";
-import ThemeToggle from "./ThemeToggle";
+import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/Button";
 import { Menu, X, Sparkles } from "lucide-react";
 
 const links = [
-  { href: "/", label: "Home" },
   { href: "/seeker", label: "For Job Seekers" },
   { href: "/recruiter", label: "For Recruiters" },
+  { href: "/#features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -56,14 +59,14 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 relative">
+        <div className="hidden lg:flex items-center gap-1 relative">
           {links.map((l) => {
             const active = pathname === l.href;
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className="relative px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors"
+                className="relative px-3.5 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors"
                 style={{ color: active ? "var(--text)" : "var(--muted)" }}
               >
                 {active && (
@@ -80,24 +83,22 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="hidden md:flex items-center gap-3 shrink-0">
-          <ThemeToggle />
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
           {user ? (
-            <>
-              <span className="text-sm text-muted whitespace-nowrap">{user.firstName}</span>
-              <Button variant="secondary" size="sm" onClick={logout}>Logout</Button>
-            </>
+            <ProfileMenu />
           ) : (
             <>
               <Link href="/login" className="text-sm font-medium text-muted hover:text-text whitespace-nowrap">
                 Login
               </Link>
-              <Link href="/register"><Button size="sm">Get Started</Button></Link>
+              <Link href="/register">
+                <Button size="sm">Get Started</Button>
+              </Link>
             </>
           )}
         </div>
 
-        <button className="md:hidden shrink-0" onClick={() => setMobileOpen((o) => !o)} aria-label="Menu">
+        <button className="lg:hidden shrink-0" onClick={() => setMobileOpen((o) => !o)} aria-label="Menu">
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
               key={mobileOpen ? "x" : "menu"}
@@ -120,7 +121,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden border-t overflow-hidden"
+            className="lg:hidden border-t overflow-hidden"
             style={{ borderColor: "var(--border)", background: "var(--bg)" }}
           >
             <div className="px-4 py-4 flex flex-col gap-3">
@@ -140,14 +141,25 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+
               <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: "var(--border)" }}>
-                <ThemeToggle />
                 {user ? (
-                  <Button variant="secondary" size="sm" onClick={logout}>Logout</Button>
+                  <>
+                    <span className="text-sm font-medium">
+                      {user.firstName} {user.lastName}
+                    </span>
+                    <Button variant="secondary" size="sm" onClick={logout}>
+                      Logout
+                    </Button>
+                  </>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <Link href="/login" className="text-sm font-medium text-muted">Login</Link>
-                    <Link href="/register"><Button size="sm">Get Started</Button></Link>
+                    <Link href="/login" className="text-sm font-medium text-muted">
+                      Login
+                    </Link>
+                    <Link href="/register">
+                      <Button size="sm">Get Started</Button>
+                    </Link>
                   </div>
                 )}
               </div>

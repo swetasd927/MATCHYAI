@@ -24,7 +24,11 @@ function hexToUnitRgb(hex: string): [number, number, number] {
   const clean = hex.replace("#", "").trim();
   const bigint = parseInt(clean, 16);
   if (Number.isNaN(bigint) || clean.length !== 6) return [0.9, 0.4, 0.1]; // safe fallback
-  return [((bigint >> 16) & 255) / 255, ((bigint >> 8) & 255) / 255, (bigint & 255) / 255];
+  return [
+    ((bigint >> 16) & 255) / 255,
+    ((bigint >> 8) & 255) / 255,
+    (bigint & 255) / 255,
+  ];
 }
 
 export default function Globe({
@@ -50,67 +54,70 @@ export default function Globe({
 
   useEffect(() => setMounted(true), []);
 
+  // components/Globe.tsx — replace the useEffect that creates the globe
   useEffect(() => {
     if (!mounted || !canvasRef.current) return;
 
-    // Read the current theme's actual colors from CSS variables so the
-    // globe re-themes itself automatically between light/dark mode instead
-    // of using hardcoded colors. forceDark bypasses this entirely and uses
-    // a fixed blue "deep space" palette, independent of the brand color.
     const styles = getComputedStyle(document.documentElement);
-    const primary: [number, number, number] = forceDark
-      ? [0.35, 0.55, 1]
-      : hexToUnitRgb(styles.getPropertyValue("--primary") || "#e8600c");
-    const primaryLight: [number, number, number] = forceDark
-      ? [0.55, 0.75, 1]
-      : hexToUnitRgb(styles.getPropertyValue("--primary-light") || "#ff8a3d");
-    const isDark = forceDark ?? resolvedTheme === "dark";
+    const primary = hexToUnitRgb(
+      styles.getPropertyValue("--primary") || "#e8600c",
+    );
+    const primaryLight = hexToUnitRgb(
+      styles.getPropertyValue("--primary-light") || "#ff8a3d",
+    );
+    const isDark = resolvedTheme === "dark";
 
     let globe: ReturnType<typeof createGlobe> | null = null;
-    let width = 0;
 
-    const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
+    const create = (width: number) => {
+      if (globe || width === 0) return;
+      widthRef.current = width;
+      globe = createGlobe(canvasRef.current!, {
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+        width: width * 2,
+        height: width * 2,
+        phi: 0,
+        theta: 0.32,
+        dark: isDark ? 1 : 0.4,
+        diffuse: 1.2,
+        mapSamples: 14000,
+        mapBrightness: isDark ? 5.5 : 3.5,
+        baseColor: isDark ? [0.14, 0.12, 0.1] : [0.9, 0.86, 0.8],
+        markerColor: primary,
+        glowColor: primaryLight,
+        markers: MARKERS,
+        opacity: 0.9,
+        onRender: (state) => {
+          if (pointerInteracting.current === null) {
+            phiRef.current += autoRotateSpeed.current;
+          } else {
+            phiRef.current += pointerDelta.current;
+          }
+          state.phi = phiRef.current;
+          state.width = widthRef.current * 2;
+          state.height = widthRef.current * 2;
+        },
+      });
+    };
+
+    // ResizeObserver guarantees we get the real, settled box size — a single
+    // offsetWidth read on mount can fire before layout/animation settles and
+    // create the globe at the wrong internal resolution (the cropped look).
+    const ro = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? 0;
+      if (!globe && width > 0) {
+        create(width);
+      } else if (globe) {
         widthRef.current = width;
       }
-    };
-    window.addEventListener("resize", onResize);
-    onResize();
-
-    globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-      width: width * 2,
-      height: width * 2,
-      phi: 0,
-      theta: 0.32,
-      dark: isDark ? 1 : 0.4,
-      diffuse: 1.2,
-      mapSamples: 14000,
-      mapBrightness: isDark ? 5.5 : 3.5,
-      baseColor: forceDark ? [0.05, 0.09, 0.22] : isDark ? [0.14, 0.12, 0.1] : [0.9, 0.86, 0.8],
-      markerColor: primary,
-      glowColor: primaryLight,
-      markers: MARKERS,
-      opacity: 0.9,
-      onRender: (state) => {
-        // Auto-rotate unless the user is actively dragging.
-        if (pointerInteracting.current === null) {
-          phiRef.current += autoRotateSpeed.current;
-        } else {
-          phiRef.current += pointerDelta.current;
-        }
-        state.phi = phiRef.current;
-        state.width = widthRef.current * 2;
-        state.height = widthRef.current * 2;
-      },
     });
+    ro.observe(canvasRef.current);
 
     return () => {
+      ro.disconnect();
       globe?.destroy();
-      window.removeEventListener("resize", onResize);
     };
-  }, [mounted, resolvedTheme, forceDark]);
+  }, [mounted, resolvedTheme]);
 
   return (
     <div

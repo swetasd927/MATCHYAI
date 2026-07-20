@@ -15,7 +15,7 @@ export default function GlobeSection() {
         {/* soft glow sitting behind the globe */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-[420px] w-[420px] rounded-full opacity-40 blur-3xl md:h-[560px] md:w-[560px]"
+            className="h-105 w-105 rounded-full opacity-40 blur-3xl md:h-[560px] md:w-[560px]"
             style={{ background: "rgba(59, 130, 246, 0.55)" }}
           />
         </div>
@@ -42,7 +42,7 @@ export default function GlobeSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto mt-8 flex max-w-[620px] justify-center"
+            className="relative mx-auto mt-8 flex max-w-155 justify-center"
           >
             <Globe
               size={620}
