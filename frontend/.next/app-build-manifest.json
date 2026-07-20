@@ -21,15 +21,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/register/page.js"
     ],
-    "/recruiter/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/recruiter/page.js"
-    ],
     "/seeker/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/seeker/page.js"
+    ],
+    "/recruiter/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/recruiter/page.js"
     ]
   }
 }
