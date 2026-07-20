@@ -21,18 +21,21 @@ export default function JobMatchesPage() {
     // query string — the previous "/match?jobId=" call didn't match that
     // route at all, so it 404'd and silently fell back to an empty array
     // every time, making it look like there were never any matches.
+   
+
+
     Promise.all([
-      apiFetch<{ data: Job }>(`/jobs/${params.id}`).catch(() => null),
-      apiFetch<{ data: Match[] }>(`/match/${params.id}`).catch(() => ({ data: [] as Match[] }))
-    ])
-    .then(([jobRes, matchesRes]) => {
-      if (jobRes && jobRes.data) setJob(jobRes.data);
-      if (matchesRes && matchesRes.data) {
-        // Sort matches by highest percentage
-        setMatches(matchesRes.data.sort((a, b) => b.matchPercentage - a.matchPercentage));
-      }
-    })
-    .finally(() => setLoading(false));
+  apiFetch<{ data: Job }>(`/jobs/${params.id}`).catch(() => null),
+  apiFetch<{ matches: Match[] }>(`/match/${params.id}`).catch(() => ({ matches: [] as Match[] }))
+])
+.then(([jobRes, matchesRes]) => {
+  if (jobRes && jobRes.data) setJob(jobRes.data);
+  if (matchesRes && matchesRes.matches) {
+    setMatches(matchesRes.matches.sort((a, b) => b.matchPercentage - a.matchPercentage));
+  }
+})
+.finally(() => setLoading(false));
+
   }, [params.id]);
 
   return (
