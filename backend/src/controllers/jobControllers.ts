@@ -7,7 +7,6 @@ import {
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { AppDataSource } from "../config/db.js";
 import { Job } from "../entities/Job.js";
-import { describe } from "node:test";
 
 interface AuthRequest extends Request {
   user?: { id: number; role: string };
@@ -48,7 +47,7 @@ export const createJob = async (
     }
 
     const { description } = req.body;
-    
+
     if (!description) {
       res.status(400).json({ message: "Job description is required" });
       return;
@@ -108,6 +107,30 @@ export const createJob = async (
       message: "Server error while processing job description",
       error: err.message,
       stack: err.stack,
+    });
+  }
+};
+
+export const getJobById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const jobRepository = AppDataSource.getRepository(Job);
+    const job = await jobRepository.findOne({ where: { id: Number(req.params.id) } });
+
+    if (!job) {
+      res.status(404).json({ message: "Job not found" });
+      return;
+    }
+
+    res.status(200).json({ data: job });
+  } catch (error) {
+    const err = error as AppError;
+    console.error("Error fetching job:", error);
+    res.status(500).json({
+      message: "Server error while fetching job",
+      error: err.message,
     });
   }
 };
