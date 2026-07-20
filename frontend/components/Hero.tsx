@@ -8,9 +8,10 @@ import { useRef, useState } from "react";
 import { Button } from "./ui/Button";
 import { Card } from "./ui/Card";
 import { MatchRing } from "./MatchRing";
+import Globe from "./Globe";
 
-const headlineTop = "Hire smarter.";
-const headlineBottom = "Match instantly.";
+const headlineTop = "Hire top talents.";
+const headlineBottom = "In seconds.";
 
 function AnimatedHeadline() {
   const ease: Easing = [0.22, 1, 0.36, 1];
@@ -273,7 +274,23 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        <TiltCard />
+        <div className="relative flex items-center justify-center">
+          {/* Globe accent — sits behind the match-card demo, echoes the
+              "global network" idea without competing with the card content. */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="pointer-events-none absolute -z-10 sm:pointer-events-auto"
+            style={{
+              filter: "drop-shadow(0 0 60px color-mix(in oklab, var(--primary) 35%, transparent))",
+            }}
+          >
+            <Globe size={460} />
+          </motion.div>
+
+          <TiltCard />
+        </div>
       </div>
     </section>
   );
