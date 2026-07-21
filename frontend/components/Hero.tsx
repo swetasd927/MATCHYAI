@@ -123,10 +123,7 @@ function TiltCard() {
 
 function GlobalNetworkBand() {
   return (
-    <section
-      className="relative overflow-hidden py-24"
-      style={{ background: "#0a0806" }}
-    >
+    <section className="relative py-24" style={{ background: "#0a0806" }}>
       <div
         className="absolute inset-0 opacity-60"
         style={{
@@ -136,33 +133,20 @@ function GlobalNetworkBand() {
         }}
       />
 
-      <div className="relative max-w-3xl mx-auto text-center px-6 mb-4">
+      <div className="relative max-w-6xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto flex justify-center"
-          style={{ filter: "drop-shadow(0 0 40px rgba(255, 122, 41, 0.25))" }}
+          className="inline-block"
+          style={{
+            filter: "drop-shadow(0 0 40px rgba(255, 122, 41, 0.25))",
+          }}
         >
-          <Globe size={320} />
+          <Globe size={400} />
         </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto flex justify-center items-center"
-        style={{
-          width: 360,
-          maxWidth: "90vw",
-          filter: "drop-shadow(0 0 40px rgba(255, 122, 41, 0.25))",
-        }}
-      >
-        <Globe size={360} />
-      </motion.div>
     </section>
   );
 }

@@ -67,62 +67,67 @@ export default function Globe({
     );
     const isDark = resolvedTheme === "dark";
 
-    let globe: ReturnType<typeof createGlobe> | null = null;
+    const el = canvasRef.current;
 
-    const create = (width: number) => {
-      if (globe || width === 0) return;
-      widthRef.current = width;
-      globe = createGlobe(canvasRef.current!, {
-        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-        width: width * 2,
-        height: width * 2,
-        phi: 0,
-        theta: 0.32,
-        dark: isDark ? 1 : 0.4,
-        diffuse: 1.2,
-        mapSamples: 14000,
-        mapBrightness: isDark ? 5.5 : 3.5,
-        baseColor: isDark ? [0.14, 0.12, 0.1] : [0.9, 0.86, 0.8],
-        markerColor: primary,
-        glowColor: primaryLight,
-        markers: MARKERS,
-        opacity: 0.9,
-        onRender: (state) => {
-          if (pointerInteracting.current === null) {
-            phiRef.current += autoRotateSpeed.current;
-          } else {
-            phiRef.current += pointerDelta.current;
-          }
-          state.phi = phiRef.current;
-          state.width = widthRef.current * 2;
-          state.height = widthRef.current * 2;
-        },
-      });
-    };
+    // cobe's underlying WebGL renderer sets the canvas's REAL pixel buffer
+    // size as `canvas.clientWidth * devicePixelRatio` internally — that part
+    // is automatic and we don't control it directly. But the width/height we
+    // pass into createGlobe (and update each frame) are used separately, as
+    // a resolution constant baked into the shader's screen-space math. If
+    // that constant doesn't exactly match the real buffer size, the sphere
+    // renders at the wrong scale — on a non-Retina display (devicePixelRatio
+    // 1) the old hardcoded "* 2" made the shader think the canvas was twice
+    // its real size, so it only ever drew into one quarter of it. Using the
+    // same dpr value for both keeps them in sync on every screen.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const initialWidth = el.getBoundingClientRect().width || size;
+    widthRef.current = initialWidth;
 
-    // ResizeObserver guarantees we get the real, settled box size — a single
-    // offsetWidth read on mount can fire before layout/animation settles and
-    // create the globe at the wrong internal resolution (the cropped look).
-    const ro = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width ?? 0;
-      if (!globe && width > 0) {
-        create(width);
-      } else if (globe) {
-        widthRef.current = width;
-      }
+    const globe = createGlobe(el, {
+      devicePixelRatio: dpr,
+      width: initialWidth * dpr,
+      height: initialWidth * dpr,
+      phi: 0,
+      theta: 0.32,
+      dark: isDark ? 1 : 0.4,
+      diffuse: 1.2,
+      mapSamples: 14000,
+      mapBrightness: isDark ? 5.5 : 3.5,
+      baseColor: isDark ? [0.14, 0.12, 0.1] : [0.9, 0.86, 0.8],
+      markerColor: primary,
+      glowColor: primaryLight,
+      markers: MARKERS,
+      opacity: 0.9,
+      onRender: (state) => {
+        if (pointerInteracting.current === null) {
+          phiRef.current += autoRotateSpeed.current;
+        } else {
+          phiRef.current += pointerDelta.current;
+        }
+        state.phi = phiRef.current;
+        state.width = widthRef.current * dpr;
+        state.height = widthRef.current * dpr;
+      },
     });
-    ro.observe(canvasRef.current);
+
+    // Still watch for real resizes (e.g. window resize) after creation —
+    // just update the ref cobe reads on each frame, no recreation needed.
+    const ro = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width;
+      if (width) widthRef.current = width;
+    });
+    ro.observe(el);
 
     return () => {
       ro.disconnect();
-      globe?.destroy();
+      globe.destroy();
     };
-  }, [mounted, resolvedTheme]);
+  }, [mounted, resolvedTheme, size]);
 
   return (
     <div
-      className={`relative aspect-square ${className}`}
-      style={{ width: size, maxWidth: "100%" }}
+      className={`relative shrink-0 ${className}`}
+      style={{ width: size, height: size, maxWidth: "100%", aspectRatio: "1 / 1" }}
     >
       <canvas
         ref={canvasRef}
