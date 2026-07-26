@@ -8,6 +8,7 @@ import { Card } from "../components/ui/Card";
 
 import { IconBadge } from "../components/ui/iconBadge";
 import BentoFeatures from "../components/BentoFeatures";
+import GlobeSection from "../components/GlobeSection";
 import Hero from "../components/Hero";
 import PricingSection from "../components/PricingSection";
 import CtaBand from "../components/ctaBand";
@@ -58,6 +59,8 @@ export default function Home() {
       </section>
 
       <BentoFeatures />
+
+      <GlobeSection />
 
       <div id="pricing" className="scroll-mt-24">
         <PricingSection variant="home" />
