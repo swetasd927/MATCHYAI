@@ -1,0 +1,52 @@
+name: Continuous Deployment (CD)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies & Verify Build
+        run: |
+          cd backend
+          npm ci || npm install
+          npm run build
+
+      # Add custom deployment step here (e.g. Render, Railway, AWS, Docker push)
+      - name: Deployment Notice
+        run: echo "Backend deployment checks passed successfully."
+
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    needs: deploy-backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies & Build
+        run: |
+          cd frontend
+          npm ci || npm install
+          npm run build
+
+      # Add Vercel / Netlify / Custom host deployment action here
+      - name: Deployment Notice
+        run: echo "Frontend deployment checks passed successfully."
