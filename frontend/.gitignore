@@ -1,2 +1,11 @@
-.env
-node_modules
+# Next.js build output
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Environment files
+.env*
