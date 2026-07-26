@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
+    "start": "node dist/index.js",
     "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "author": "",
