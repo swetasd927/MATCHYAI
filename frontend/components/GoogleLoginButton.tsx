@@ -16,8 +16,8 @@ export default function GoogleLoginButton({
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center gap-3">
-      <div className="w-full flex justify-center overflow-hidden">
+    <div className="w-full flex flex-col items-center gap-2">
+      <div className="w-full flex justify-center">
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
             if (credentialResponse.credential) {
@@ -35,13 +35,13 @@ export default function GoogleLoginButton({
             if (onError) onError("Google Sign-In was cancelled or failed.");
           }}
           theme="filled_black"
-          shape="pill"
-          width="320"
+          shape="rectangular"
+          width="340"
           text="continue_with"
         />
       </div>
       {loading && (
-        <p className="text-xs text-stone-400 animate-pulse">Authenticating with Google...</p>
+        <p className="text-xs text-orange-400 animate-pulse">Authenticating with Google...</p>
       )}
     </div>
   );

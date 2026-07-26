@@ -1,121 +1,121 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles, CheckCircle2 } from "lucide-react";
-import { Card } from "./ui/Card";
-import { MatchRing } from "./MatchRing";
+import { ArrowLeft, FileText, Search, Users, Mail, Sparkles } from "lucide-react";
 
 export default function AuthPanel({
-  eyebrow,
-  title,
-  gradientWord,
-  subtitle,
-  highlights,
+  title = "Continue Your Journey with MatchyAI",
+  subtitle = "Log in to explore new job opportunities or manage your hiring process with ease.",
 }: {
-  eyebrow: string;
-  title: string;
-  gradientWord: string;
-  subtitle: string;
-  highlights: string[];
+  title?: string;
+  subtitle?: string;
 }) {
   return (
-    <div className="relative hidden md:flex flex-col justify-center overflow-hidden px-14 py-16">
-      {/* Background orbs */}
-      <div className="absolute inset-0 -z-10 overflow-hidden" style={{ background: "var(--surface-2)" }}>
+    <div className="relative hidden md:flex flex-col justify-between overflow-hidden px-10 py-12 text-white min-h-[580px]" style={{ background: "radial-gradient(circle at 30% 30%, #1a0f07 0%, #0c0805 60%, #050302 100%)" }}>
+      {/* Background ambient glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute rounded-full opacity-30 blur-3xl"
-          style={{ width: 420, height: 420, top: "-8%", left: "-10%", background: "var(--primary)" }}
-          animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute w-[450px] h-[450px] rounded-full blur-[120px] opacity-25"
+          style={{ background: "var(--primary)", top: "-10%", left: "-10%" }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.35, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute rounded-full opacity-20 blur-3xl"
-          style={{ width: 360, height: 360, bottom: "-10%", right: "-8%", background: "var(--primary-light)" }}
-          animate={{ x: [0, -30, 0], y: [0, -30, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute w-[350px] h-[350px] rounded-full blur-[100px] opacity-20"
+          style={{ background: "#ff7733", bottom: "-5%", right: "-5%" }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div className="noise-mesh absolute inset-0" />
       </div>
 
-      <Link href="/" className="flex items-center gap-2 font-display text-xl font-bold w-fit mb-12">
-        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white shrink-0">
-          <Sparkles size={16} />
-        </span>
-        <span>
-          Matchy<span className="text-gradient">AI</span>
-        </span>
-      </Link>
+      {/* Back Button */}
+      <div className="z-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-stone-900/80 border border-stone-800 text-stone-300 hover:text-white hover:border-stone-700 transition-all"
+        >
+          <ArrowLeft size={14} />
+          Back
+        </Link>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mb-5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium w-fit"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--primary)" }}
-      >
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-        </span>
-        {eyebrow}
-      </motion.div>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.15 }}
-        className="font-display text-4xl font-bold leading-tight max-w-sm mb-4"
-      >
-        {title} <span className="text-gradient">{gradientWord}</span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.22 }}
-        className="max-w-sm mb-10 leading-relaxed"
-        style={{ color: "var(--muted)" }}
-      >
-        {subtitle}
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="flex flex-col gap-3 mb-10"
-      >
-        {highlights.map((h) => (
-          <span key={h} className="inline-flex items-center gap-2.5 text-sm">
-            <CheckCircle2 size={16} style={{ color: "var(--success)" }} />
-            {h}
-          </span>
-        ))}
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <Card className="max-w-xs" variant="glass">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-sm">Amelia Novak</h3>
-              <p className="text-xs" style={{ color: "var(--muted)" }}>
-                Backend Engineer
-              </p>
-            </div>
-            <MatchRing percentage={91} size={52} />
-          </div>
-          <p
-            className="rounded-md px-3 py-2 text-xs leading-relaxed"
-            style={{ background: "var(--surface-2)", color: "var(--muted)" }}
+      {/* Center Orbital Animation */}
+      <div className="relative z-10 flex flex-col items-center justify-center my-auto py-8">
+        <div className="relative w-64 h-64 flex items-center justify-center">
+          {/* Outer Ring */}
+          <motion.div
+            className="absolute inset-0 rounded-full border border-stone-800/80 shadow-[0_0_30px_rgba(249,87,22,0.05)]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           >
-            Strong overlap in distributed systems experience
-          </p>
-        </Card>
-      </motion.div>
+            {/* Top Outer Node */}
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2">
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white"
+              >
+                <FileText size={20} />
+              </motion.div>
+            </div>
+
+            {/* Bottom Outer Node */}
+            <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="w-11 h-11 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white"
+              >
+                <Mail size={20} />
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Inner Ring */}
+          <motion.div
+            className="absolute w-36 h-36 rounded-full border border-stone-800/90"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            {/* Left Inner Node */}
+            <div className="absolute top-1/2 -left-4 -translate-y-1/2">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="w-9 h-9 rounded-lg bg-orange-600/90 flex items-center justify-center shadow-md text-white"
+              >
+                <Search size={16} />
+              </motion.div>
+            </div>
+
+            {/* Right Inner Node */}
+            <div className="absolute top-1/2 -right-4 -translate-y-1/2">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="w-9 h-9 rounded-lg bg-amber-600/90 flex items-center justify-center shadow-md text-white"
+              >
+                <Users size={16} />
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Center Brand Pulse Core */}
+          <div className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-xl shadow-orange-500/30">
+            <Sparkles size={24} className="text-white animate-pulse" />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Text Content */}
+      <div className="relative z-10 text-center max-w-xs mx-auto">
+        <h2 className="font-display text-2xl font-bold text-orange-500 mb-2 leading-tight">
+          {title}
+        </h2>
+        <p className="text-xs text-stone-400 leading-relaxed">
+          {subtitle}
+        </p>
+      </div>
     </div>
   );
 }

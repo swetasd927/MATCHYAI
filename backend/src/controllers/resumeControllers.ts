@@ -27,7 +27,7 @@ interface ResumeData {
 
 // Initialize the Gemini AI model for structured JSON parsing
 const aiModel = new ChatGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
   model: "gemini-2.5-flash",
   temperature: 0.1,
   // Was 12 — on a daily quota error, retries don't help (the cap doesn't
@@ -43,7 +43,7 @@ const aiModel = new ChatGoogleGenerativeAI({
 // to the model used in jobControllers.ts, since resume and job embeddings are
 // compared via cosine similarity and only make sense in the same vector space.
 const embeddingsModel = new GoogleGenerativeAIEmbeddings({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
   modelName: "gemini-embedding-001",
 });
 
