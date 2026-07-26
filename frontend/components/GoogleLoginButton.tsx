@@ -32,8 +32,9 @@ export default function GoogleLoginButton({
             }
           }}
           onError={() => {
-            if (onError) onError("Google Sign-In was cancelled or failed.");
+            if (onError) onError("Google Sign-In popup was blocked or closed. Please allow popups for this site.");
           }}
+          useOneTap={false}
           theme="filled_black"
           shape="rectangular"
           width="340"
