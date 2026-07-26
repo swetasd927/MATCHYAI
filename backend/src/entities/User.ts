@@ -19,8 +19,14 @@ export class User {
     @Column("varchar", { unique: true })
     email!: string
 
-    @Column("varchar")
-    password!: string // This will store the hashed password
+    @Column("varchar", { nullable: true })
+    password?: string // Nullable for OAuth users
+
+    @Column("varchar", { nullable: true, unique: true })
+    googleId?: string
+
+    @Column("varchar", { nullable: true })
+    avatarUrl?: string
 
     @Column("varchar", { default: UserRole.SEEKER })
     role!: UserRole

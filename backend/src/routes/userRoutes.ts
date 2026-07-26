@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { register, login } from "../controllers/userControllers.js";
+import { register, login, googleLogin } from "../controllers/userControllers.js";
 
 const router = Router();
 
@@ -8,5 +8,8 @@ router.post("/register", register);
 
 // POST /api/users/login
 router.post("/login", login);
+
+// POST /api/users/google-login
+router.post("/google-login", googleLogin);
 
 export default router;
