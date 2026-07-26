@@ -17,6 +17,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (credential: string, role?: UserRole) => Promise<void>;
   register: (data: RegisterInput) => Promise<void>;
   logout: () => void;
 }
@@ -45,6 +46,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push(data.user.role === "recruiter" ? "/recruiter" : "/seeker");
   };
 
+  const loginWithGoogle = async (credential: string, role?: UserRole) => {
+    const data = await apiFetch<{ token: string; user: User }>("/users/google-login", {
+      method: "POST",
+      body: JSON.stringify({ credential, role }),
+    });
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    setUser(data.user);
+    router.push(data.user.role === "recruiter" ? "/recruiter" : "/seeker");
+  };
+
   const register = async (input: RegisterInput) => {
     await apiFetch("/users/register", { method: "POST", body: JSON.stringify(input) });
     router.push("/login");
@@ -58,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, loginWithGoogle, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
