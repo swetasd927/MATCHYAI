@@ -33,14 +33,14 @@ export default function GlobeSection() {
         className="relative overflow-hidden rounded-3xl p-8 sm:p-12 md:p-16 shadow-xl"
         style={{
           background: "#FFFBE6",
-          border: "2px solid rgba(15, 60, 101, 0.18)",
+          border: "2px solid rgba(0, 0, 0, 0.12)",
         }}
       >
         {/* Ambient background soft glow */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-96 w-96 rounded-full opacity-15 blur-3xl md:h-[500px] md:w-[500px]"
-            style={{ background: "rgba(15, 60, 101, 0.3)" }}
+            className="h-96 w-96 rounded-full opacity-10 blur-3xl md:h-[500px] md:w-[500px]"
+            style={{ background: "rgba(0, 0, 0, 0.15)" }}
           />
         </div>
 
@@ -53,14 +53,14 @@ export default function GlobeSection() {
             transition={{ duration: 0.5 }}
             className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold"
             style={{
-              background: "rgba(15, 60, 101, 0.08)",
-              border: "1px solid rgba(15, 60, 101, 0.18)",
-              color: "#0F3C65",
+              background: "rgba(0, 0, 0, 0.06)",
+              border: "1px solid rgba(0, 0, 0, 0.15)",
+              color: "#000000",
             }}
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "#0F3C65" }} />
-              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "#0F3C65" }} />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "#000000" }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "#000000" }} />
             </span>
             The Global Talent Network
           </motion.div>
@@ -72,10 +72,10 @@ export default function GlobeSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display mx-auto mb-4 max-w-3xl text-3xl font-bold leading-tight md:text-5xl"
-            style={{ color: "#0F3C65" }}
+            style={{ color: "#000000" }}
           >
             Hire Talent in Minutes.{" "}
-            <span style={{ color: "#0F3C65", opacity: 0.9 }}>
+            <span style={{ color: "#000000", opacity: 0.85 }}>
               Discover Jobs Worldwide.
             </span>
           </motion.h2>
@@ -87,7 +87,7 @@ export default function GlobeSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mx-auto mb-10 max-w-2xl text-base md:text-lg font-medium leading-relaxed"
-            style={{ color: "rgba(15, 60, 101, 0.85)" }}
+            style={{ color: "rgba(0, 0, 0, 0.8)" }}
           >
             Expand your global reach and get hired sooner without friction. MatchyAI bridges forward-thinking recruiters and top talent worldwide with semantic precision.
           </motion.p>
@@ -105,7 +105,7 @@ export default function GlobeSection() {
               customBaseColor="#0F3C65"
               customGlowColor="#0F3C65"
               customMarkerColor="#FFFBE6"
-              className="drop-shadow-[0_12px_40px_rgba(15,60,101,0.22)]"
+              className="drop-shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
             />
           </motion.div>
 
@@ -124,24 +124,24 @@ export default function GlobeSection() {
                   key={i}
                   className="rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1"
                   style={{
-                    background: "rgba(255, 255, 255, 0.75)",
-                    border: "1px solid rgba(15, 60, 101, 0.15)",
-                    boxShadow: "0 4px 14px rgba(15, 60, 101, 0.04)",
+                    background: "rgba(255, 255, 255, 0.8)",
+                    border: "1px solid rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0 4px 14px rgba(0, 0, 0, 0.04)",
                   }}
                 >
                   <div
                     className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl"
                     style={{
-                      background: "#0F3C65",
+                      background: "#000000",
                       color: "#FFFBE6",
                     }}
                   >
                     <Icon size={20} />
                   </div>
-                  <h3 className="mb-1 text-base font-bold" style={{ color: "#0F3C65" }}>
+                  <h3 className="mb-1 text-base font-bold" style={{ color: "#000000" }}>
                     {f.title}
                   </h3>
-                  <p className="text-xs font-medium leading-relaxed" style={{ color: "rgba(15, 60, 101, 0.75)" }}>
+                  <p className="text-xs font-medium leading-relaxed" style={{ color: "rgba(0, 0, 0, 0.75)" }}>
                     {f.desc}
                   </p>
                 </div>
