@@ -1,7 +1,7 @@
 // components/Navbar.tsx
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../lib/auth";
@@ -20,6 +20,7 @@ const links = [
 export default function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -33,6 +34,20 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.includes("#")) {
+      const [path, hash] = href.split("#");
+      if (pathname === path || (pathname === "/" && path === "/")) {
+        e.preventDefault();
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", `#${hash}`);
+        }
+      }
+    }
+  };
 
   return (
     <nav
@@ -68,6 +83,7 @@ export default function Navbar() {
                 <Link
                   key={l.href}
                   href={l.href}
+                  onClick={(e) => handleNavClick(e, l.href)}
                   className="relative px-3 py-1.5 text-[13px] font-medium rounded-full whitespace-nowrap transition-colors"
                   style={{ color: active ? "var(--text)" : "var(--muted)" }}
                 >
@@ -140,6 +156,10 @@ export default function Navbar() {
                 >
                   <Link
                     href={l.href}
+                    onClick={(e) => {
+                      handleNavClick(e, l.href);
+                      setMobileOpen(false);
+                    }}
                     className="text-sm font-medium"
                     style={{ color: pathname === l.href ? "var(--primary)" : "var(--text)" }}
                   >

@@ -36,7 +36,7 @@ export default function Home() {
     <div>
       <Hero />
 
-      <section id="features" className="py-20 grid md:grid-cols-3 gap-6">
+      <section id="features" className="py-20 grid md:grid-cols-3 gap-6 scroll-mt-24">
         {features.map((f, i) => (
           <motion.div
             key={f.title}
@@ -59,7 +59,7 @@ export default function Home() {
 
       <BentoFeatures />
 
-      <div id="pricing">
+      <div id="pricing" className="scroll-mt-24">
         <PricingSection variant="home" />
       </div>
 
