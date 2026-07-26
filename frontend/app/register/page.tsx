@@ -7,6 +7,7 @@ import { useAuth } from "../../lib/auth";
 import { FloatingInput } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 import AuthPanel from "../../components/AuthPanel";
+import GoogleLoginButton from "../../components/GoogleLoginButton";
 
 type Role = "seeker" | "recruiter";
 
@@ -62,7 +63,7 @@ export default function RegisterPage() {
             className="w-full max-w-sm"
           >
             <h2 className="font-display text-3xl font-bold tracking-tight mb-2">Create your account</h2>
-            <p className="text-sm mb-7" style={{ color: "var(--muted)" }}>
+            <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
               Already have one?{" "}
               <Link href="/login" className="font-semibold text-primary hover:underline">
                 Sign in
@@ -116,6 +117,16 @@ export default function RegisterPage() {
                   </button>
                 );
               })}
+            </div>
+
+            <div className="mb-6">
+              <GoogleLoginButton role={form.role} onError={(err) => setError(err)} />
+              <div className="relative my-6 flex items-center justify-center">
+                <div className="w-full border-t" style={{ borderColor: "var(--border)" }} />
+                <span className="absolute px-3 text-xs uppercase tracking-wider bg-surface text-stone-400">
+                  Or register with email
+                </span>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-5">

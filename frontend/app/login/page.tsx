@@ -7,6 +7,7 @@ import { useAuth } from "../../lib/auth";
 import { FloatingInput } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 import AuthPanel from "../../components/AuthPanel";
+import GoogleLoginButton from "../../components/GoogleLoginButton";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -51,12 +52,22 @@ export default function LoginPage() {
             className="w-full max-w-sm"
           >
             <h2 className="font-display text-3xl font-bold tracking-tight mb-2">Sign in</h2>
-            <p className="text-sm mb-8" style={{ color: "var(--muted)" }}>
+            <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
               New to MatchyAI?{" "}
               <Link href="/register" className="font-semibold text-primary hover:underline">
                 Create an account
               </Link>
             </p>
+
+            <div className="mb-6">
+              <GoogleLoginButton onError={(err) => setError(err)} />
+              <div className="relative my-6 flex items-center justify-center">
+                <div className="w-full border-t" style={{ borderColor: "var(--border)" }} />
+                <span className="absolute px-3 text-xs uppercase tracking-wider bg-surface text-stone-400">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
 
             <AnimatePresence>
               {error && (

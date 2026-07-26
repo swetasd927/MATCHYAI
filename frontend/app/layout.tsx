@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import { AuthProvider } from "../lib/auth";
 import { ThemeProvider } from "next-themes";
+import GoogleAuthProvider from "../components/GoogleAuthProvider";
 import Navbar from "../components/Navbar";
 import PageTransition from "../components/PageTransition";
 
@@ -47,12 +48,14 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
-          <AuthProvider>
-            <Navbar />
-            <main className="max-w-6xl mx-auto px-4 sm:px-6">
-              <PageTransition>{children}</PageTransition>
-            </main>
-          </AuthProvider>
+          <GoogleAuthProvider>
+            <AuthProvider>
+              <Navbar />
+              <main className="max-w-6xl mx-auto px-4 sm:px-6">
+                <PageTransition>{children}</PageTransition>
+              </main>
+            </AuthProvider>
+          </GoogleAuthProvider>
         </ThemeProvider>
       </body>
     </html>
