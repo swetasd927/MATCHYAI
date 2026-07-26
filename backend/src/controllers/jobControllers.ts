@@ -23,7 +23,7 @@ interface JobData {
 }
 
 const aiModel = new ChatGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
   model: "gemini-2.5-flash",
   temperature: 0.1,
   maxRetries: 23, // fail fast, matches resumeControllers.ts
@@ -33,7 +33,7 @@ const aiModel = new ChatGoogleGenerativeAI({
 // resume embeddings are compared via cosine similarity, so they only make
 // sense if both come from the exact same embedding model/vector space.
 const embeddingsModel = new GoogleGenerativeAIEmbeddings({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
   modelName: "gemini-embedding-001",
 });
 
