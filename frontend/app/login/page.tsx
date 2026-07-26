@@ -2,10 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, AlertCircle } from "lucide-react";
+import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../lib/auth";
-import { FloatingInput } from "../../components/ui/Input";
-import { Button } from "../../components/ui/Button";
 import AuthPanel from "../../components/AuthPanel";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
 
@@ -13,6 +11,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,91 +29,128 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="py-10 md:py-16">
+    <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 bg-black">
       <div
-        className="max-w-5xl mx-auto grid md:grid-cols-2 rounded-lg overflow-hidden border"
-        style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+        className="w-full max-w-5xl grid md:grid-cols-2 rounded-2xl overflow-hidden border border-stone-800/80 shadow-2xl"
+        style={{ background: "#0a0a0a" }}
       >
+        {/* Left Panel: Animated Orbital Hero */}
         <AuthPanel
-          eyebrow="Welcome back"
-          title="Pick up right"
-          gradientWord="where you left off."
-          subtitle="Sign in to see your latest matches, track applications, and keep your profile working for you."
-          highlights={["Ranked, explainable matches", "Real-time application tracking", "Your data, never sold"]}
+          title="Continue Your Journey with MatchyAI"
+          subtitle="Log in to explore new job opportunities or manage your hiring process with ease."
         />
 
-        <div className="flex items-center justify-center px-6 sm:px-10 py-14">
-          <motion.form
-            onSubmit={handleSubmit}
+        {/* Right Form Panel */}
+        <div className="flex flex-col justify-center px-8 sm:px-12 py-12 text-white">
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="w-full max-w-sm"
+            className="w-full max-w-sm mx-auto"
           >
-            <h2 className="font-display text-3xl font-bold tracking-tight mb-2">Sign in</h2>
-            <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
-              New to MatchyAI?{" "}
-              <Link href="/register" className="font-semibold text-primary hover:underline">
-                Create an account
-              </Link>
+            {/* Header */}
+            <h2 className="font-display text-3xl font-bold tracking-tight mb-1 text-white">
+              Welcome Back
+            </h2>
+            <p className="text-xs text-stone-400 mb-8">
+              Nice to see you again! Please login to continue
             </p>
 
-            <div className="mb-6">
-              <GoogleLoginButton onError={(err) => setError(err)} />
-              <div className="relative my-6 flex items-center justify-center">
-                <div className="w-full border-t" style={{ borderColor: "var(--border)" }} />
-                <span className="absolute px-3 text-xs uppercase tracking-wider bg-surface text-stone-400">
-                  Or continue with email
-                </span>
-              </div>
-            </div>
-
+            {/* Error Alert */}
             <AnimatePresence>
               {error && (
                 <motion.div
                   initial={{ opacity: 0, height: 0, marginBottom: 0 }}
                   animate={{ opacity: 1, height: "auto", marginBottom: 20 }}
                   exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                  className="flex items-start gap-2 px-4 py-3 rounded-(--radius-md) text-sm overflow-hidden"
-                  style={{
-                    background: "color-mix(in oklab, var(--danger) 10%, transparent)",
-                    border: "1px solid color-mix(in oklab, var(--danger) 30%, transparent)",
-                    color: "var(--danger)",
-                  }}
+                  className="flex items-start gap-2 px-4 py-3 rounded-lg text-xs overflow-hidden bg-red-950/40 border border-red-800/50 text-red-400"
                 >
-                  <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                  <AlertCircle size={15} className="shrink-0 mt-0.5" />
                   {error}
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <div className="flex flex-col gap-5">
-              <FloatingInput
-                label="Email address"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <FloatingInput
-                label="Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+            {/* Login Form */}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* Email */}
+              <div className="flex flex-col gap-1.5 text-left">
+                <label className="text-xs font-medium text-stone-300">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-stone-950 border border-stone-800/90 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="flex flex-col gap-1.5 text-left">
+                <label className="text-xs font-medium text-stone-300">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-3.5 py-2.5 pr-10 rounded-lg bg-stone-950 border border-stone-800/90 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <div className="flex justify-end mt-1">
+                  <Link
+                    href="#"
+                    className="text-[11px] text-orange-500 hover:underline"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+              </div>
+
+              {/* Primary Login Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-2 py-3 px-4 rounded-lg bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white text-sm font-semibold shadow-lg shadow-orange-600/20 transition-all disabled:opacity-50"
+              >
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-6 flex items-center justify-center">
+              <div className="w-full border-t border-stone-800" />
+              <span className="absolute px-3 text-xs text-stone-500 bg-[#0a0a0a]">
+                or
+              </span>
             </div>
 
-            <Button type="submit" size="lg" loading={loading} className="w-full mt-8 group">
-              {!loading && (
-                <>
-                  Sign In
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-                </>
-              )}
-              {loading && "Signing in..."}
-            </Button>
-          </motion.form>
+            {/* Google Login Button at the Bottom */}
+            <div className="w-full">
+              <GoogleLoginButton onError={(err) => setError(err)} />
+            </div>
+
+            {/* Register Footer */}
+            <div className="mt-8 text-center text-xs text-stone-400">
+              New To MatchyAI?{" "}
+              <Link href="/register" className="font-semibold text-orange-500 hover:underline ml-1">
+                Register Now
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
