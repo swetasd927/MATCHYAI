@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
