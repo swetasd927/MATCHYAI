@@ -30,37 +30,38 @@ export default function GlobeSection() {
   return (
     <section className="relative py-12 md:py-20">
       <div
-        className="relative overflow-hidden rounded-3xl p-8 sm:p-12 md:p-16 shadow-xl"
+        className="relative overflow-hidden rounded-3xl p-8 sm:p-12 md:p-16 shadow-xl transition-colors duration-300"
         style={{
-          background: "#FFD3AC",
-          border: "2px solid rgba(0, 0, 0, 0.1)",
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          boxShadow: "var(--shadow-md)",
         }}
       >
-        {/* Ambient background soft glow */}
+        {/* Signature primary orange ambient glow */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-96 w-96 rounded-full opacity-20 blur-3xl md:h-[500px] md:w-[500px]"
-            style={{ background: "rgba(255, 255, 255, 0.5)" }}
+            className="h-96 w-96 rounded-full opacity-15 blur-3xl md:h-[500px] md:w-[500px]"
+            style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
           />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto text-center">
-          {/* Section Pill Badge */}
+          {/* Section Pill Badge — exact match with Hero */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold"
+            className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-medium"
             style={{
-              background: "rgba(0, 0, 0, 0.06)",
-              border: "1px solid rgba(0, 0, 0, 0.15)",
-              color: "#000000",
+              background: "var(--surface-2)",
+              border: "1px solid var(--border)",
+              color: "var(--primary)",
             }}
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "var(--primary)" }} />
-              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "var(--primary)" }} />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
             The Global Talent Network
           </motion.div>
@@ -72,7 +73,7 @@ export default function GlobeSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display mx-auto mb-4 max-w-3xl text-3xl font-bold leading-tight md:text-5xl"
-            style={{ color: "#000000" }}
+            style={{ color: "var(--text)" }}
           >
             Hire Talent in Minutes.{" "}
             <span className="text-gradient block sm:inline">
@@ -86,8 +87,8 @@ export default function GlobeSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mb-10 max-w-2xl text-base md:text-lg font-medium leading-relaxed"
-            style={{ color: "rgba(0, 0, 0, 0.8)" }}
+            className="mx-auto mb-10 max-w-2xl text-base md:text-lg leading-relaxed"
+            style={{ color: "var(--muted)" }}
           >
             Expand your global reach and get hired sooner without friction. MatchyAI bridges forward-thinking recruiters and top talent worldwide with semantic precision.
           </motion.p>
@@ -102,14 +103,14 @@ export default function GlobeSection() {
           >
             <Globe
               size={540}
-              customBaseColor="#0F3C65"
-              customGlowColor="#0F3C65"
-              customMarkerColor="#FFD3AC"
-              className="drop-shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
+              customBaseColor="#0f172a"
+              customGlowColor="#0f172a"
+              customMarkerColor="#e8600c"
+              className="drop-shadow-[0_12px_40px_rgba(232,96,12,0.15)]"
             />
           </motion.div>
 
-          {/* 4 Feature Highlights Grid */}
+          {/* 4 Feature Highlights Grid — matching Hero card styling */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -124,24 +125,23 @@ export default function GlobeSection() {
                   key={i}
                   className="rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1"
                   style={{
-                    background: "rgba(255, 255, 255, 0.8)",
-                    border: "1px solid rgba(0, 0, 0, 0.1)",
-                    boxShadow: "0 4px 14px rgba(0, 0, 0, 0.04)",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border)",
                   }}
                 >
                   <div
                     className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl"
                     style={{
-                      background: "#000000",
-                      color: "#FFD3AC",
+                      background: "color-mix(in oklab, var(--primary) 15%, transparent)",
+                      color: "var(--primary)",
                     }}
                   >
                     <Icon size={20} />
                   </div>
-                  <h3 className="mb-1 text-base font-bold" style={{ color: "#000000" }}>
+                  <h3 className="mb-1 text-base font-bold" style={{ color: "var(--text)" }}>
                     {f.title}
                   </h3>
-                  <p className="text-xs font-medium leading-relaxed" style={{ color: "rgba(0, 0, 0, 0.75)" }}>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--muted)" }}>
                     {f.desc}
                   </p>
                 </div>
