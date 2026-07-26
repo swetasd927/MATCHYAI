@@ -17,7 +17,18 @@ if (!process.env.GEMINI_API_KEY) {
 }
 
 const app = express();
-app.use(cors());
+//app.use(cors());: development
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      process.env.FRONTEND_URL!,
+    ],
+    credentials: true,
+  })
+);
+// production for removing cors error: allows development too
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
