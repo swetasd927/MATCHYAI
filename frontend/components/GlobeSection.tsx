@@ -32,15 +32,15 @@ export default function GlobeSection() {
       <div
         className="relative overflow-hidden rounded-3xl p-8 sm:p-12 md:p-16 shadow-xl"
         style={{
-          background: "#FFFBE6",
-          border: "2px solid rgba(0, 0, 0, 0.12)",
+          background: "#FFD3AC",
+          border: "2px solid rgba(0, 0, 0, 0.1)",
         }}
       >
         {/* Ambient background soft glow */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-96 w-96 rounded-full opacity-10 blur-3xl md:h-[500px] md:w-[500px]"
-            style={{ background: "rgba(0, 0, 0, 0.15)" }}
+            className="h-96 w-96 rounded-full opacity-20 blur-3xl md:h-[500px] md:w-[500px]"
+            style={{ background: "rgba(255, 255, 255, 0.5)" }}
           />
         </div>
 
@@ -59,13 +59,13 @@ export default function GlobeSection() {
             }}
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "#000000" }} />
-              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "#000000" }} />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "var(--primary)" }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "var(--primary)" }} />
             </span>
             The Global Talent Network
           </motion.div>
 
-          {/* Heading */}
+          {/* Heading with signature orange gradient mix */}
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export default function GlobeSection() {
             style={{ color: "#000000" }}
           >
             Hire Talent in Minutes.{" "}
-            <span style={{ color: "#000000", opacity: 0.85 }}>
+            <span className="text-gradient block sm:inline">
               Discover Jobs Worldwide.
             </span>
           </motion.h2>
@@ -104,7 +104,7 @@ export default function GlobeSection() {
               size={540}
               customBaseColor="#0F3C65"
               customGlowColor="#0F3C65"
-              customMarkerColor="#FFFBE6"
+              customMarkerColor="#FFD3AC"
               className="drop-shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
             />
           </motion.div>
@@ -133,7 +133,7 @@ export default function GlobeSection() {
                     className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl"
                     style={{
                       background: "#000000",
-                      color: "#FFFBE6",
+                      color: "#FFD3AC",
                     }}
                   >
                     <Icon size={20} />
