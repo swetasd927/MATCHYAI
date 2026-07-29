@@ -144,3 +144,31 @@ export const getJobById = async (
     });
   }
 };
+
+export const getAllJobs = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    const jobRepository = AppDataSource.getRepository(Job);
+    let jobs: Job[];
+
+    if (req.user?.role === "recruiter") {
+      jobs = await jobRepository.find({
+        where: { recruiterId: req.user.id },
+        order: { createdAt: "DESC" },
+      });
+    } else {
+      jobs = await jobRepository.find({
+        order: { createdAt: "DESC" },
+      });
+    }
+
+    res.status(200).json({ data: jobs });
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({
+      message: "Server error while fetching jobs. Please try again.",
+    });
+  }
+};
