@@ -55,11 +55,48 @@ export const getMatchesForJob = async (
       return;
     }
 
-    // 3. Compare vectors using Cosine Similarity
+    // 3. Compare vectors using Calibrated Cosine Similarity + Skill Overlap
+    const jobSkills = [
+      ...(job.skills || []),
+      ...(job.requirements || []),
+    ].map((s) => s.toLowerCase().trim()).filter(Boolean);
+
     const matchResults = resumes.map((resume) => {
       const similarityScore = cosineSimilarity(job.embedding, resume.embedding);
-      const rawScore = Math.max(0, similarityScore);
-      const matchPercentage = Number((rawScore * 100).toFixed(2));
+
+      // Embedding calibration:
+      // Raw cosine similarity between tech documents sits in a baseline range [0.50, 0.90].
+      // Map 0.50 -> 0% and 0.90 -> 100% so unrelated tech roles (like QA vs SWE) don't get 60%+.
+      const minSim = 0.50;
+      const maxSim = 0.90;
+      const calibratedEmbeddingScore = Math.min(
+        100,
+        Math.max(0, ((similarityScore - minSim) / (maxSim - minSim)) * 100),
+      );
+
+      // Skill Overlap calculation
+      const candidateSkills = (resume.skills || []).map((s) => s.toLowerCase().trim());
+      let matchedSkillCount = 0;
+
+      if (jobSkills.length > 0) {
+        jobSkills.forEach((jobSkill) => {
+          const matched = candidateSkills.some(
+            (cSkill) => cSkill.includes(jobSkill) || jobSkill.includes(cSkill),
+          );
+          if (matched) matchedSkillCount++;
+        });
+      }
+
+      const skillScore =
+        jobSkills.length > 0 ? (matchedSkillCount / jobSkills.length) * 100 : calibratedEmbeddingScore;
+
+      // Hybrid score: 60% calibrated embedding similarity + 40% skill overlap
+      const finalScore =
+        jobSkills.length > 0
+          ? 0.6 * calibratedEmbeddingScore + 0.4 * skillScore
+          : calibratedEmbeddingScore;
+
+      const matchPercentage = Number(finalScore.toFixed(2));
 
       return {
         resumeId: resume.id,
@@ -72,8 +109,8 @@ export const getMatchesForJob = async (
       };
     });
 
-    // 4. Sort and return Top 5 — no AI calls here, so this responds fast
-    matchResults.sort((a, b) => b.similarityScore - a.similarityScore);
+    // 4. Sort by matchPercentage DESC and return Top 5
+    matchResults.sort((a, b) => b.matchPercentage - a.matchPercentage);
     const top5Matches = matchResults.slice(0, 5);
 
     res.status(200).json({
