@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "576593608797-u8525u5pr6ovdfeif7qsnnfej6bpj327.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "576593608797-gamgvo8osdnd1gtg5aongoo08qo9ssma.apps.googleusercontent.com";
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 const userRepository = AppDataSource.getRepository(User);
 
